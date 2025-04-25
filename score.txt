@@ -39,3 +39,11 @@ elifff, level1, 0
 elifff, level1, 0
 rahimeç, level1, 5
 rahimeç, level1, 15
+eliffffry, level1, 45
+eliffffry, level1, 0
+eliffffry, level1, 0
+eliffffry, level1, -10
+ha, level1, -10
+ha, level1, 5
+ha, level1, -25
+e, level1, 35

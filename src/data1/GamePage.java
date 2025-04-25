@@ -70,7 +70,7 @@ public class GamePage extends javax.swing.JFrame {
             //şimdiki düğüm bir sonrakinde prev olur
             prev = node;
 
-            buttons[i].setText(type);
+            buttons[i].setText((i+1)+ " "+type);
             buttons[i].setPreferredSize(new Dimension(100, 60));
             switch (type) {
                 case "Treasure" ->
