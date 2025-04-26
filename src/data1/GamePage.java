@@ -18,6 +18,7 @@ import javax.sound.sampled.*;
 
 import java.io.File;
 import java.io.IOException;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -28,6 +29,8 @@ public class GamePage extends javax.swing.JFrame {
     /**
      * Creates new form GamePage
      */
+    
+    private ImageIcon playerIcon;
     public void playDiceSound() {
         try {
             File soundFile = new File("sounds/dice_roll.wav"); // yolumuz burası
@@ -79,6 +82,8 @@ public class GamePage extends javax.swing.JFrame {
             jButton21, jButton22, jButton23, jButton24, jButton25,
             jButton26, jButton27, jButton28, jButton29, jButton30
         };
+        
+        playerIcon = new ImageIcon(getClass().getResource("/images/player_icon.png"));
 
         String[] types = {"Treasure", "Trap", "Empty"};
         //ilk eleman head sonrakiler prev.next olacak
@@ -111,21 +116,22 @@ public class GamePage extends javax.swing.JFrame {
             buttons[i].setPreferredSize(new Dimension(100, 60));
             switch (type) {
                 case "Treasure" ->
-                    buttons[i].setBackground(Color.YELLOW);
+                    buttons[i].setBackground(Color.GREEN);
                 case "Trap" ->
                     buttons[i].setBackground(Color.RED);
                 case "Finish" ->
-                    buttons[i].setBackground(Color.CYAN);
+                    buttons[i].setBackground(Color.darkGray);
                 case "Start" ->
-                    buttons[i].setBackground(Color.ORANGE);
+                    buttons[i].setBackground(Color.darkGray);
                 default ->
-                    buttons[i].setBackground(Color.LIGHT_GRAY);
+                    buttons[i].setBackground(Color.white);
             }
 
             buttons[i].setOpaque(true);
             buttons[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            buttons[i].setEnabled(false);
+            //buttons[i].setEnabled(false);
         }
+        buttons[0].setIcon(playerIcon);
     }
 
     /**
@@ -376,8 +382,9 @@ public class GamePage extends javax.swing.JFrame {
 
         for (int i = 0; i < buttons.length; i++) {
             if (i == currentNode.index) {
-                buttons[i].setBackground(Color.BLUE);
+                buttons[i].setIcon(playerIcon);
             } else {
+                buttons[i].setIcon(null); // diğerlerinde ikon olmasın
                 switch (buttons[i].getText()) {
                     case "Treasure" ->
                         buttons[i].setBackground(Color.YELLOW);

@@ -70,3 +70,12 @@ rahime, level1, 25
 rahime, level1, 0
 rahime, level1, 20
 rahime, level2, 0
+rahime, level1, 10
+rahime, level2, 35
+TestUser, level2, 25
+rahime, level1, -30
+TestUser, level2, 5
+elif, level1, 20
+TestUser, level2, 30
+TestUser, level2, -5
+TestUser, level2, 5

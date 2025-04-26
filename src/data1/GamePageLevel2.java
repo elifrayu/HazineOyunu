@@ -126,23 +126,23 @@ public class GamePageLevel2 extends javax.swing.JFrame {
 
             // Burada tasarımdaki hazır butonları ayarlıyoruz
             buttons[i].setText((i + 1) + " " + type);
-            buttons[i].setEnabled(false);
+            //buttons[i].setEnabled(false);
 
             switch (type) {
                 case "Treasure" ->
-                    buttons[i].setBackground(Color.YELLOW);
+                    buttons[i].setBackground(Color.GREEN);
                 case "Trap" ->
                     buttons[i].setBackground(Color.RED);
                 case "Forward" ->
-                    buttons[i].setBackground(Color.GREEN);
+                    buttons[i].setBackground(Color.lightGray);
                 case "Backward" ->
-                    buttons[i].setBackground(Color.ORANGE);
+                    buttons[i].setBackground(Color.darkGray);
                 case "Finish" ->
-                    buttons[i].setBackground(Color.CYAN);
+                    buttons[i].setBackground(Color.BLUE);
                 case "Start" ->
-                    buttons[i].setBackground(Color.WHITE);
+                    buttons[i].setBackground(Color.BLUE);
                 default ->
-                    buttons[i].setBackground(Color.LIGHT_GRAY);
+                    buttons[i].setBackground(Color.white);
             }
 
             buttons[i].setOpaque(true);
@@ -168,9 +168,8 @@ public class GamePageLevel2 extends javax.swing.JFrame {
             temp = temp.next;
         }
         // 🏁 Başlangıçta ikon Start hücresinde olsun
-    buttons[0].setIcon(playerIcon);
+        buttons[0].setIcon(playerIcon);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -374,19 +373,23 @@ public class GamePageLevel2 extends javax.swing.JFrame {
 
     private void btnRollDiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRollDiceActionPerformed
         playDiceSound();
-// TODO add your handling code here:
+
         int dice = (int) (Math.random() * 6) + 1;
         lblDice.setText("Rolled: " + dice);
 
+        // Zar kadar ilerle
         for (int i = 0; i < dice && currentNode.next != null; i++) {
             currentNode = currentNode.next;
         }
 
-        // Eğer jump varsa, sürekli zıpla if ile yapmadık çünkü her aşamada geri gittiğinde de gittiği yer geri yada ileri zıplama olabilir kontrol ediyot
-        while (currentNode.jump != null) {
+        // Eğer jump varsa (maksimum 3 kere zıplayabilir güvenlik için)
+        int jumpCount = 0;
+        while (currentNode.jump != null && jumpCount < 3) {
             currentNode = currentNode.jump;
+            jumpCount++;
         }
 
+        // Hücre tipine göre puan değişimi ve ses efekti
         String cellType = currentNode.type;
         switch (cellType) {
             case "Treasure" -> {
@@ -402,33 +405,42 @@ public class GamePageLevel2 extends javax.swing.JFrame {
 
         lblScore.setText("Score: " + score);
 
-        // Renkleri güncelle
+        // 🔥 Bütün butonları güncelle: (icon + yazı)
+        SpotNode temp = head;
         for (int i = 0; i < buttons.length; i++) {
-            if (i == currentNode.index) {
-                buttons[i].setIcon(playerIcon); // 🎯 Sadece bulunduğun hücrede ikon göster
-            } else {
-                buttons[i].setIcon(null); // diğerlerinde ikon olmasın
-
-                // Hücrelerin arkaplanlarını yine tipine göre ayarla
-                switch (buttons[i].getText().split(" ")[1]) {
-                    case "Treasure" ->
-                        buttons[i].setBackground(Color.YELLOW);
-                    case "Trap" ->
-                        buttons[i].setBackground(Color.RED);
-                    case "Forward" ->
-                        buttons[i].setBackground(Color.GREEN);
-                    case "Backward" ->
-                        buttons[i].setBackground(Color.ORANGE);
-                    case "Empty" ->
-                        buttons[i].setBackground(Color.LIGHT_GRAY);
-                    case "Finish" ->
-                        buttons[i].setBackground(Color.CYAN);
-                    case "Start" ->
-                        buttons[i].setBackground(Color.WHITE);
-                }
+            if (temp == null) {
+                break;
             }
-        }
 
+            buttons[i].setIcon(null); // ikonları temizle
+            buttons[i].setText((i + 1) + " " + temp.type); // kendi type'ını yaz
+
+            // İcon eklemek
+            if (i == currentNode.index) {
+                buttons[i].setIcon(playerIcon);
+                buttons[i].setText(""); // ikon olunca text sil
+            }
+
+            // Renk güncellemesi - Level 2'de kullandığımız tasarıma uygun
+            switch (temp.type) {
+                case "Treasure" ->
+                    buttons[i].setBackground(Color.GREEN); // Level 2'de green yapmıştık
+                case "Trap" ->
+                    buttons[i].setBackground(Color.RED);
+                case "Forward" ->
+                    buttons[i].setBackground(Color.LIGHT_GRAY);
+                case "Backward" ->
+                    buttons[i].setBackground(Color.DARK_GRAY);
+                case "Finish" ->
+                    buttons[i].setBackground(Color.BLUE);
+                case "Start" ->
+                    buttons[i].setBackground(Color.BLUE);
+                default ->
+                    buttons[i].setBackground(Color.WHITE);
+            }
+
+            temp = temp.next;
+        }
         if (currentNode.type.equals("Finish")) {
             JOptionPane.showMessageDialog(this, "Game Over! Final Score: " + score);
             saveScoreToFile();
