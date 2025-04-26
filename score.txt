@@ -47,3 +47,13 @@ ha, level1, -10
 ha, level1, 5
 ha, level1, -25
 e, level1, 35
+elif, level1, 0
+rahime, level1, -5
+rahime, level1, -15
+rahime, level2, 0
+elif, level1, -20
+TestUser, level2, 0
+sema, level1, 40
+TestUser, level2, 10
+rahime, level1, 35
+rahime, level2, 10

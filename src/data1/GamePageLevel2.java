@@ -4,45 +4,41 @@
  */
 package data1;
 
+/**
+ *
+ * @author rahimecalik
+ */
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.BorderFactory;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author elifuyar
- */
-public class GamePage extends javax.swing.JFrame {
+public class GamePageLevel2 extends javax.swing.JFrame {
 
     /**
-     * Creates new form GamePage
+     * Creates new form GamePageLevel2
      */
+    private String username;
+    private int score = 0;
     private SpotNode head;
     private SpotNode currentNode;
+    private javax.swing.JButton[] buttons;
 
-    private JButton[] buttons;
-
-    String username;
-
-    private int score = 0;
-    private int currentIndex = 0;
-
-    public GamePage(String username) {
+    public GamePageLevel2(String username) {
         this.username = username;
         initComponents();
-        setupButtonLinkedList();
+
+        setupButtonLinkedListLevel2();
         lblUsername.setText("User: " + username);
         lblScore.setText("Score: 0");
     }
 
-    private void setupButtonLinkedList() {
-        // Tüm butonları bir dizi (array) içine alıyoruz. Böylece tek tek değil, döngü ile işlem yapabiliriz.
+    private void setupButtonLinkedListLevel2() {
         buttons = new JButton[]{
             jButton1, jButton2, jButton3, jButton4, jButton5,
             jButton6, jButton7, jButton8, jButton9, jButton10,
@@ -52,51 +48,75 @@ public class GamePage extends javax.swing.JFrame {
             jButton26, jButton27, jButton28, jButton29, jButton30
         };
 
-        String[] types = {"Treasure", "Trap", "Empty"};
-        //ilk eleman head sonrakiler prev.next olacak
+        String[] types = {"Treasure", "Trap", "Empty", "Forward", "Backward"};
+        head = null;
         SpotNode prev = null;
-        mapPanel.setLayout(new GridLayout(5, 6, 15, 15));
-        for (int i = 0; i < buttons.length; i++) {
+
+        // 1. Normal ileri-geri bağlantılı listeyi kur
+        for (int i = 0; i < 30; i++) {
             String type = types[(int) (Math.random() * types.length)];
             
-            if (i == 0) {
+           if (i == 0) {
                 type = "Start"; // 1. butonun tipi Start olacak
             }
-            
+
             if (i == 29) {
                 type = "Finish"; // 30. butonun tipi Finish olacak
             }
-            
+
             SpotNode node = new SpotNode(type, i);
 
             if (head == null) {
                 head = node;
-                currentNode = head; // oyuncu başlangıçta head’te
+                currentNode = head;
             } else {
-                //önceki düğümle şimdikini bağlar
                 prev.next = node;
+                node.prev = prev;
             }
-            //şimdiki düğüm bir sonrakinde prev olur
             prev = node;
 
-            buttons[i].setText((i+1)+ " "+type);
-            buttons[i].setPreferredSize(new Dimension(100, 60));
+            // Burada tasarımdaki hazır butonları ayarlıyoruz
+            buttons[i].setText((i + 1) + " " + type);
+            buttons[i].setEnabled(false);
+
             switch (type) {
                 case "Treasure" ->
                     buttons[i].setBackground(Color.YELLOW);
                 case "Trap" ->
                     buttons[i].setBackground(Color.RED);
+                case "Forward" ->
+                    buttons[i].setBackground(Color.GREEN);
+                case "Backward" ->
+                    buttons[i].setBackground(Color.ORANGE);
                 case "Finish" ->
                     buttons[i].setBackground(Color.CYAN);
                 case "Start" ->
-                    buttons[i].setBackground(Color.ORANGE);
+                    buttons[i].setBackground(Color.WHITE);
                 default ->
                     buttons[i].setBackground(Color.LIGHT_GRAY);
             }
 
             buttons[i].setOpaque(true);
             buttons[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            buttons[i].setEnabled(false);
+        }
+
+        // 2. Forward ve Backward düğümlerine jump bağlantısı kur
+        SpotNode temp = head;
+        while (temp != null) {
+            if (temp.type.equals("Forward")) {
+                SpotNode jumpTarget = temp;
+                for (int j = 0; j < 3 && jumpTarget.next != null; j++) {
+                    jumpTarget = jumpTarget.next;
+                }
+                temp.jump = jumpTarget;
+            } else if (temp.type.equals("Backward")) {
+                SpotNode jumpTarget = temp;
+                for (int j = 0; j < 3 && jumpTarget.prev != null; j++) {
+                    jumpTarget = jumpTarget.prev;
+                }
+                temp.jump = jumpTarget;
+            }
+            temp = temp.next;
         }
     }
 
@@ -109,6 +129,7 @@ public class GamePage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnRollDice = new javax.swing.JButton();
         mapPanel = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -129,8 +150,8 @@ public class GamePage extends javax.swing.JFrame {
         jButton17 = new javax.swing.JButton();
         jButton18 = new javax.swing.JButton();
         jButton19 = new javax.swing.JButton();
-        jButton20 = new javax.swing.JButton();
         jButton21 = new javax.swing.JButton();
+        jButton20 = new javax.swing.JButton();
         jButton22 = new javax.swing.JButton();
         jButton23 = new javax.swing.JButton();
         jButton24 = new javax.swing.JButton();
@@ -140,115 +161,14 @@ public class GamePage extends javax.swing.JFrame {
         jButton28 = new javax.swing.JButton();
         jButton29 = new javax.swing.JButton();
         jButton30 = new javax.swing.JButton();
-        btnBack = new javax.swing.JButton();
-        btnRollDice = new javax.swing.JButton();
-        lblScore = new javax.swing.JLabel();
         lblUsername = new javax.swing.JLabel();
+        lblScore = new javax.swing.JLabel();
         lblDice = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        mapPanel.setLayout(new java.awt.GridLayout());
-
-        jButton1.setText("jButton1");
-        mapPanel.add(jButton1);
-
-        jButton2.setText("jButton1");
-        mapPanel.add(jButton2);
-
-        jButton3.setText("jButton1");
-        mapPanel.add(jButton3);
-
-        jButton4.setText("jButton1");
-        mapPanel.add(jButton4);
-
-        jButton5.setText("jButton1");
-        mapPanel.add(jButton5);
-
-        jButton6.setText("jButton1");
-        mapPanel.add(jButton6);
-
-        jButton7.setText("jButton1");
-        mapPanel.add(jButton7);
-
-        jButton8.setText("jButton1");
-        mapPanel.add(jButton8);
-
-        jButton9.setText("jButton1");
-        mapPanel.add(jButton9);
-
-        jButton10.setText("jButton1");
-        mapPanel.add(jButton10);
-
-        jButton11.setText("jButton1");
-        mapPanel.add(jButton11);
-
-        jButton12.setText("jButton1");
-        mapPanel.add(jButton12);
-
-        jButton13.setText("jButton1");
-        mapPanel.add(jButton13);
-
-        jButton14.setText("jButton1");
-        mapPanel.add(jButton14);
-
-        jButton15.setText("jButton1");
-        mapPanel.add(jButton15);
-
-        jButton16.setText("jButton1");
-        mapPanel.add(jButton16);
-
-        jButton17.setText("jButton1");
-        mapPanel.add(jButton17);
-
-        jButton18.setText("jButton1");
-        mapPanel.add(jButton18);
-
-        jButton19.setText("jButton1");
-        mapPanel.add(jButton19);
-
-        jButton20.setText("jButton1");
-        mapPanel.add(jButton20);
-
-        jButton21.setText("jButton1");
-        jButton21.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton21ActionPerformed(evt);
-            }
-        });
-        mapPanel.add(jButton21);
-
-        jButton22.setText("jButton1");
-        mapPanel.add(jButton22);
-
-        jButton23.setText("jButton1");
-        mapPanel.add(jButton23);
-
-        jButton24.setText("jButton1");
-        mapPanel.add(jButton24);
-
-        jButton25.setText("jButton1");
-        mapPanel.add(jButton25);
-
-        jButton26.setText("jButton1");
-        mapPanel.add(jButton26);
-
-        jButton27.setText("jButton1");
-        mapPanel.add(jButton27);
-
-        jButton28.setText("jButton1");
-        mapPanel.add(jButton28);
-
-        jButton29.setText("jButton1");
-        mapPanel.add(jButton29);
-
-        jButton30.setText("jButton1");
-        mapPanel.add(jButton30);
-
-        btnBack.setText("Back");
-        btnBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBackActionPerformed(evt);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                formComponentHidden(evt);
             }
         });
 
@@ -259,74 +179,159 @@ public class GamePage extends javax.swing.JFrame {
             }
         });
 
+        mapPanel.setLayout(new java.awt.GridLayout(5, 6, 10, 10));
+
+        jButton1.setText("...");
+        mapPanel.add(jButton1);
+
+        jButton2.setText("...");
+        mapPanel.add(jButton2);
+
+        jButton3.setText("...");
+        mapPanel.add(jButton3);
+
+        jButton4.setText("...");
+        mapPanel.add(jButton4);
+
+        jButton5.setText("...");
+        mapPanel.add(jButton5);
+
+        jButton6.setText("...");
+        mapPanel.add(jButton6);
+
+        jButton7.setText("...");
+        mapPanel.add(jButton7);
+
+        jButton8.setText("...");
+        mapPanel.add(jButton8);
+
+        jButton9.setText("...");
+        mapPanel.add(jButton9);
+
+        jButton10.setText("jButton10");
+        mapPanel.add(jButton10);
+
+        jButton11.setText("jButton11");
+        mapPanel.add(jButton11);
+
+        jButton12.setText("jButton12");
+        mapPanel.add(jButton12);
+
+        jButton13.setText("jButton13");
+        mapPanel.add(jButton13);
+
+        jButton14.setText("jButton14");
+        mapPanel.add(jButton14);
+
+        jButton15.setText("jButton15");
+        mapPanel.add(jButton15);
+
+        jButton16.setText("jButton16");
+        mapPanel.add(jButton16);
+
+        jButton17.setText("jButton17");
+        mapPanel.add(jButton17);
+
+        jButton18.setText("jButton18");
+        mapPanel.add(jButton18);
+
+        jButton19.setText("jButton19");
+        mapPanel.add(jButton19);
+
+        jButton21.setText("jButton21");
+        mapPanel.add(jButton21);
+
+        jButton20.setText("jButton20");
+        mapPanel.add(jButton20);
+
+        jButton22.setText("jButton22");
+        mapPanel.add(jButton22);
+
+        jButton23.setText("jButton23");
+        mapPanel.add(jButton23);
+
+        jButton24.setText("jButton24");
+        mapPanel.add(jButton24);
+
+        jButton25.setText("jButton25");
+        mapPanel.add(jButton25);
+
+        jButton26.setText("jButton26");
+        mapPanel.add(jButton26);
+
+        jButton27.setText("jButton27");
+        mapPanel.add(jButton27);
+
+        jButton28.setText("jButton28");
+        mapPanel.add(jButton28);
+
+        jButton29.setText("jButton29");
+        mapPanel.add(jButton29);
+
+        jButton30.setText("jButton30");
+        mapPanel.add(jButton30);
+
+        lblUsername.setText("User:");
+
+        lblScore.setText("Score: 0");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(77, 77, 77)
-                .addComponent(btnRollDice, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
-                .addComponent(lblDice, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 216, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblScore, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(79, 79, 79))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(142, Short.MAX_VALUE)
-                    .addComponent(mapPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 709, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(86, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(btnRollDice)
+                        .addGap(121, 121, 121)
+                        .addComponent(lblDice))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(mapPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 643, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(188, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblScore, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE))
+                .addGap(51, 51, 51))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lblUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(22, 22, 22)
-                        .addComponent(lblScore, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(11, 11, 11))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnBack)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 523, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnRollDice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblDice, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(78, 78, 78))))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(326, Short.MAX_VALUE)
-                    .addComponent(mapPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(328, Short.MAX_VALUE)))
+                .addGap(60, 60, 60)
+                .addComponent(mapPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(lblUsername)
+                .addGap(18, 18, 18)
+                .addComponent(lblScore)
+                .addGap(1, 1, 1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRollDice)
+                    .addComponent(lblDice))
+                .addGap(32, 32, 32))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
+    private void formComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentHidden
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton21ActionPerformed
-
-    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        new MainMenu().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnBackActionPerformed
+    }//GEN-LAST:event_formComponentHidden
 
     private void btnRollDiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRollDiceActionPerformed
-
+        // TODO add your handling code here:
         int dice = (int) (Math.random() * 6) + 1;
         lblDice.setText("Rolled: " + dice);
-        //dice kadar gidiyor
+
         for (int i = 0; i < dice && currentNode.next != null; i++) {
             currentNode = currentNode.next;
+        }
+
+        // Eğer jump varsa, sürekli zıpla if ile yapmadık çünkü her aşamada geri gittiğinde de gittiği yer geri yada ileri zıplama olabilir kontrol ediyot
+        while (currentNode.jump != null) {
+            currentNode = currentNode.jump;
         }
 
         String cellType = currentNode.type;
@@ -339,15 +344,20 @@ public class GamePage extends javax.swing.JFrame {
 
         lblScore.setText("Score: " + score);
 
+        // Renkleri güncelle
         for (int i = 0; i < buttons.length; i++) {
             if (i == currentNode.index) {
                 buttons[i].setBackground(Color.BLUE);
             } else {
-                switch (buttons[i].getText()) {
+                switch (buttons[i].getText().split(" ")[1]) {
                     case "Treasure" ->
                         buttons[i].setBackground(Color.YELLOW);
                     case "Trap" ->
                         buttons[i].setBackground(Color.RED);
+                    case "Forward" ->
+                        buttons[i].setBackground(Color.GREEN);
+                    case "Backward" ->
+                        buttons[i].setBackground(Color.ORANGE);
                     case "Empty" ->
                         buttons[i].setBackground(Color.LIGHT_GRAY);
                 }
@@ -355,22 +365,12 @@ public class GamePage extends javax.swing.JFrame {
         }
 
         if (currentNode.type.equals("Finish")) {
-            // Oyuncu sona ulaştı
-            JOptionPane.showMessageDialog(this, "Level 1 tamamlandı! Skorunuz: " + score);
-            saveScoreToFile(); // önce Level 1 skorunu kaydet
-
-            int choice = JOptionPane.showConfirmDialog(this,
-                    "Level 2'ye geçmek ister misiniz?", "Devam Et?",
-                    JOptionPane.YES_NO_OPTION);
-
-            if (choice == JOptionPane.YES_OPTION) {
-                new GamePageLevel2(username).setVisible(true); // Level 2 ekranı açılacak (bunu yazacağız)
-                this.dispose();
-            } else {
-                new MainMenu().setVisible(true); // Ana menüye dön
-                this.dispose();
-            }
+            JOptionPane.showMessageDialog(this, "Game Over! Final Score: " + score);
+            saveScoreToFile();
+            new MainMenu().setVisible(true);
+            this.dispose();
         }
+
     }//GEN-LAST:event_btnRollDiceActionPerformed
 
     private void saveScoreToFile() {
@@ -378,7 +378,7 @@ public class GamePage extends javax.swing.JFrame {
             FileWriter fw = new FileWriter("score.txt", true); // true = dosyaya ekle
             BufferedWriter bw = new BufferedWriter(fw);
 
-            bw.write(username + ", level1, " + score);
+            bw.write(username + ", level2, " + score);
             bw.newLine(); // bir sonraki kayıt alt satıra geçsin
 
             bw.close();
@@ -391,13 +391,40 @@ public class GamePage extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(() -> {
-            new MainMenu().setVisible(true);
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GamePageLevel2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GamePageLevel2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GamePageLevel2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GamePageLevel2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new GamePageLevel2("TestUser").setVisible(true); // doğru
+
+            }
         });
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnRollDice;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -432,6 +459,6 @@ public class GamePage extends javax.swing.JFrame {
     private javax.swing.JLabel lblDice;
     private javax.swing.JLabel lblScore;
     private javax.swing.JLabel lblUsername;
-    private javax.swing.JPanel mapPanel;
+    javax.swing.JPanel mapPanel;
     // End of variables declaration//GEN-END:variables
 }
