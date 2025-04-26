@@ -4,6 +4,7 @@
  */
 package data1;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,8 +17,31 @@ public class MainMenu extends javax.swing.JFrame {
      * Creates new form MainMenu
      */
     public MainMenu() {
+        setContentPane(new BackgroundPanel("/images/background.jpg"));
         initComponents();
     }
+    private void showHowToPlay() {
+    String message = """
+    <html>
+    <center>
+    <h2 style='color:#8B4513;'>🎲 How to Play 🎲</h2>
+    <p style='font-size:14px;'>
+    ➡️ Roll the dice to move forward.<br><br>
+    🏴‍☠️ Land on a treasure spot to <b style='color:green;'>gain +10 points</b>.<br><br>
+    ☠️ Land on a trap spot to <b style='color:red;'>lose -5 points</b>.<br><br>
+    🔄 'Forward' jumps you 3 steps ahead.<br><br>
+    🔙 'Backward' sends you 3 steps back.<br><br>
+    🏁 Reach the 'Finish' spot to complete the level!<br><br>
+    </p>
+    <h3 style='color:#DAA520;'>Good luck, adventurer! 🗺️</h3>
+    </center>
+    </html>
+    """;
+
+    ImageIcon icon = new ImageIcon(getClass().getResource("/images/map_icon.png")); // small icon
+    JOptionPane.showMessageDialog(this, message, "How to Play", JOptionPane.INFORMATION_MESSAGE, icon);
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,10 +56,14 @@ public class MainMenu extends javax.swing.JFrame {
         btnScoreboard = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(250, 250, 240));
 
+        btnStartGame.setBackground(new java.awt.Color(117, 65, 14));
+        btnStartGame.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         btnStartGame.setText("Start Game");
         btnStartGame.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -43,6 +71,8 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
+        btnScoreboard.setBackground(new java.awt.Color(117, 65, 14));
+        btnScoreboard.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         btnScoreboard.setText("Score Table");
         btnScoreboard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -50,6 +80,8 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
+        btnExit.setBackground(new java.awt.Color(117, 65, 14));
+        btnExit.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         btnExit.setText("Exit");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -57,41 +89,60 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 30)); // NOI18N
         jLabel1.setText("🏴‍☠️Treasure Hunt Adventure🏴‍☠️");
+
+        jLabel2.setFont(new java.awt.Font("Arial", 2, 16)); // NOI18N
+        jLabel2.setText("Roll the dice, collect treasures, and avoid traps!");
+
+        jButton1.setBackground(new java.awt.Color(117, 65, 14));
+        jButton1.setText("How To Play");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(121, 121, 121)
-                .addComponent(btnStartGame, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 262, Short.MAX_VALUE)
-                .addComponent(btnScoreboard, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(133, 133, 133))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(178, 178, 178))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(81, 81, 81)
+                        .addComponent(btnStartGame, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(90, 90, 90)
+                        .addComponent(btnScoreboard, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(219, 219, 219)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(225, 225, 225)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnExit, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnScoreboard, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnStartGame, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 247, Short.MAX_VALUE)
+                    .addComponent(btnStartGame, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnScoreboard, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
                 .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(153, Short.MAX_VALUE))
         );
 
         pack();
@@ -101,6 +152,7 @@ public class MainMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
         String username = JOptionPane.showInputDialog(this, "Enter your username:");
     if (username != null && !username.trim().isEmpty()) {
+        
         JOptionPane.showMessageDialog(this, "Welcome " + username + "!");
         new GamePage(username).setVisible(true); // GamePage penceren varsa açılır
         this.dispose(); // MainMenu kapanır
@@ -116,6 +168,10 @@ public class MainMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
         JOptionPane.showMessageDialog(this, "Scoreboard will be shown here.");
     }//GEN-LAST:event_btnScoreboardActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        showHowToPlay();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -156,6 +212,8 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnScoreboard;
     private javax.swing.JButton btnStartGame;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }

@@ -18,11 +18,58 @@ import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 
+import javax.sound.sampled.*;
+
+import java.io.File;
+import java.io.IOException;
+import javax.swing.ImageIcon;
+
 public class GamePageLevel2 extends javax.swing.JFrame {
 
     /**
      * Creates new form GamePageLevel2
      */
+    private ImageIcon playerIcon;
+
+    public void playDiceSound() {
+        try {
+            File soundFile = new File("sounds/dice_roll.wav");
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+
+            // Ses bitince kapatsın
+            clip.addLineListener(event -> {
+                if (event.getType() == LineEvent.Type.STOP) {
+                    clip.close();
+                }
+            });
+
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void playSound(String soundFileName) {
+        try {
+            File soundFile = new File("sounds/" + soundFileName);
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+
+            clip.addLineListener(event -> {
+                if (event.getType() == LineEvent.Type.STOP) {
+                    clip.close();
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private String username;
     private int score = 0;
     private SpotNode head;
@@ -48,6 +95,8 @@ public class GamePageLevel2 extends javax.swing.JFrame {
             jButton26, jButton27, jButton28, jButton29, jButton30
         };
 
+        playerIcon = new ImageIcon(getClass().getResource("/images/player_icon.png"));
+
         String[] types = {"Treasure", "Trap", "Empty", "Forward", "Backward"};
         head = null;
         SpotNode prev = null;
@@ -55,8 +104,8 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         // 1. Normal ileri-geri bağlantılı listeyi kur
         for (int i = 0; i < 30; i++) {
             String type = types[(int) (Math.random() * types.length)];
-            
-           if (i == 0) {
+
+            if (i == 0) {
                 type = "Start"; // 1. butonun tipi Start olacak
             }
 
@@ -118,7 +167,10 @@ public class GamePageLevel2 extends javax.swing.JFrame {
             }
             temp = temp.next;
         }
+        // 🏁 Başlangıçta ikon Start hücresinde olsun
+    buttons[0].setIcon(playerIcon);
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -321,7 +373,8 @@ public class GamePageLevel2 extends javax.swing.JFrame {
     }//GEN-LAST:event_formComponentHidden
 
     private void btnRollDiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRollDiceActionPerformed
-        // TODO add your handling code here:
+        playDiceSound();
+// TODO add your handling code here:
         int dice = (int) (Math.random() * 6) + 1;
         lblDice.setText("Rolled: " + dice);
 
@@ -336,10 +389,15 @@ public class GamePageLevel2 extends javax.swing.JFrame {
 
         String cellType = currentNode.type;
         switch (cellType) {
-            case "Treasure" ->
+            case "Treasure" -> {
                 score += 10;
-            case "Trap" ->
+                playSound("treasure.wav"); // 🎵 Treasure sesi çal
+            }
+
+            case "Trap" -> {
                 score -= 5;
+                playSound("trap.wav"); // 🎵 Trap sesi çal
+            }
         }
 
         lblScore.setText("Score: " + score);
@@ -347,8 +405,11 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         // Renkleri güncelle
         for (int i = 0; i < buttons.length; i++) {
             if (i == currentNode.index) {
-                buttons[i].setBackground(Color.BLUE);
+                buttons[i].setIcon(playerIcon); // 🎯 Sadece bulunduğun hücrede ikon göster
             } else {
+                buttons[i].setIcon(null); // diğerlerinde ikon olmasın
+
+                // Hücrelerin arkaplanlarını yine tipine göre ayarla
                 switch (buttons[i].getText().split(" ")[1]) {
                     case "Treasure" ->
                         buttons[i].setBackground(Color.YELLOW);
@@ -360,6 +421,10 @@ public class GamePageLevel2 extends javax.swing.JFrame {
                         buttons[i].setBackground(Color.ORANGE);
                     case "Empty" ->
                         buttons[i].setBackground(Color.LIGHT_GRAY);
+                    case "Finish" ->
+                        buttons[i].setBackground(Color.CYAN);
+                    case "Start" ->
+                        buttons[i].setBackground(Color.WHITE);
                 }
             }
         }

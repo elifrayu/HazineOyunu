@@ -57,3 +57,16 @@ sema, level1, 40
 TestUser, level2, 10
 rahime, level1, 35
 rahime, level2, 10
+rahime, level1, 5
+rahime, level1, 45
+rahime, level1, 50
+elif, level1, 5
+rahime, level1, 20
+rahime, level1, 50
+zeynep, level1, -20
+zeynep, level2, 5
+rahime, level1, 0
+rahime, level1, 25
+rahime, level1, 0
+rahime, level1, 20
+rahime, level2, 0

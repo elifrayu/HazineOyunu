@@ -14,6 +14,11 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+import javax.sound.sampled.*;
+
+import java.io.File;
+import java.io.IOException;
+
 /**
  *
  * @author elifuyar
@@ -23,6 +28,29 @@ public class GamePage extends javax.swing.JFrame {
     /**
      * Creates new form GamePage
      */
+    public void playDiceSound() {
+        try {
+            File soundFile = new File("sounds/dice_roll.wav"); // yolumuz burası
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void playSound(String soundFileName) {
+        try {
+            File soundFile = new File("sounds/" + soundFileName);
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(soundFile));
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private SpotNode head;
     private SpotNode currentNode;
 
@@ -58,15 +86,15 @@ public class GamePage extends javax.swing.JFrame {
         mapPanel.setLayout(new GridLayout(5, 6, 15, 15));
         for (int i = 0; i < buttons.length; i++) {
             String type = types[(int) (Math.random() * types.length)];
-            
+
             if (i == 0) {
                 type = "Start"; // 1. butonun tipi Start olacak
             }
-            
+
             if (i == 29) {
                 type = "Finish"; // 30. butonun tipi Finish olacak
             }
-            
+
             SpotNode node = new SpotNode(type, i);
 
             if (head == null) {
@@ -79,7 +107,7 @@ public class GamePage extends javax.swing.JFrame {
             //şimdiki düğüm bir sonrakinde prev olur
             prev = node;
 
-            buttons[i].setText((i+1)+ " "+type);
+            buttons[i].setText((i + 1) + " " + type);
             buttons[i].setPreferredSize(new Dimension(100, 60));
             switch (type) {
                 case "Treasure" ->
@@ -322,6 +350,8 @@ public class GamePage extends javax.swing.JFrame {
 
     private void btnRollDiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRollDiceActionPerformed
 
+        playDiceSound();
+
         int dice = (int) (Math.random() * 6) + 1;
         lblDice.setText("Rolled: " + dice);
         //dice kadar gidiyor
@@ -331,10 +361,15 @@ public class GamePage extends javax.swing.JFrame {
 
         String cellType = currentNode.type;
         switch (cellType) {
-            case "Treasure" ->
+            case "Treasure" -> {
                 score += 10;
-            case "Trap" ->
+                playSound("treasure.wav"); // 🎵 Treasure sesi çal
+            }
+
+            case "Trap" -> {
                 score -= 5;
+                playSound("trap.wav"); // 🎵 Trap sesi çal
+            }
         }
 
         lblScore.setText("Score: " + score);
@@ -355,22 +390,26 @@ public class GamePage extends javax.swing.JFrame {
         }
 
         if (currentNode.type.equals("Finish")) {
-            // Oyuncu sona ulaştı
-            JOptionPane.showMessageDialog(this, "Level 1 tamamlandı! Skorunuz: " + score);
-            saveScoreToFile(); // önce Level 1 skorunu kaydet
+            JOptionPane.showMessageDialog(this, "Level 1 completed! Your score: " + score);
+            saveScoreToFile();
 
-            int choice = JOptionPane.showConfirmDialog(this,
-                    "Level 2'ye geçmek ister misiniz?", "Devam Et?",
-                    JOptionPane.YES_NO_OPTION);
+            // 🎯 Burada this yerine null verdik!
+            int choice = JOptionPane.showConfirmDialog(
+                    null, "Do you want to continue to Level 2?",
+                    "Continue?",
+                    JOptionPane.YES_NO_OPTION
+            );
 
             if (choice == JOptionPane.YES_OPTION) {
-                new GamePageLevel2(username).setVisible(true); // Level 2 ekranı açılacak (bunu yazacağız)
                 this.dispose();
+                new GamePageLevel2(username).setVisible(true);
             } else {
-                new MainMenu().setVisible(true); // Ana menüye dön
                 this.dispose();
+                new MainMenu().setVisible(true);
             }
         }
+
+
     }//GEN-LAST:event_btnRollDiceActionPerformed
 
     private void saveScoreToFile() {
