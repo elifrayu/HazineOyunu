@@ -201,13 +201,13 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         jButton17 = new javax.swing.JButton();
         jButton18 = new javax.swing.JButton();
         jButton19 = new javax.swing.JButton();
-        jButton21 = new javax.swing.JButton();
         jButton20 = new javax.swing.JButton();
         jButton22 = new javax.swing.JButton();
         jButton23 = new javax.swing.JButton();
         jButton24 = new javax.swing.JButton();
         jButton25 = new javax.swing.JButton();
         jButton26 = new javax.swing.JButton();
+        jButton21 = new javax.swing.JButton();
         jButton27 = new javax.swing.JButton();
         jButton28 = new javax.swing.JButton();
         jButton29 = new javax.swing.JButton();
@@ -259,67 +259,72 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         jButton9.setText("...");
         mapPanel.add(jButton9);
 
-        jButton10.setText("jButton10");
+        jButton10.setText("...");
         mapPanel.add(jButton10);
 
-        jButton11.setText("jButton11");
+        jButton11.setText("...");
         mapPanel.add(jButton11);
 
-        jButton12.setText("jButton12");
+        jButton12.setText("...");
         mapPanel.add(jButton12);
 
-        jButton13.setText("jButton13");
+        jButton13.setText("...");
         mapPanel.add(jButton13);
 
-        jButton14.setText("jButton14");
+        jButton14.setText("...");
         mapPanel.add(jButton14);
 
-        jButton15.setText("jButton15");
+        jButton15.setText("...");
         mapPanel.add(jButton15);
 
-        jButton16.setText("jButton16");
+        jButton16.setText("...");
         mapPanel.add(jButton16);
 
-        jButton17.setText("jButton17");
+        jButton17.setText("...");
         mapPanel.add(jButton17);
 
-        jButton18.setText("jButton18");
+        jButton18.setText("...");
         mapPanel.add(jButton18);
 
-        jButton19.setText("jButton19");
+        jButton19.setText("...");
         mapPanel.add(jButton19);
 
-        jButton21.setText("jButton21");
-        mapPanel.add(jButton21);
-
-        jButton20.setText("jButton20");
+        jButton20.setText("...");
         mapPanel.add(jButton20);
 
-        jButton22.setText("jButton22");
+        jButton22.setText("...");
+        jButton22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton22ActionPerformed(evt);
+            }
+        });
         mapPanel.add(jButton22);
 
-        jButton23.setText("jButton23");
+        jButton23.setText("...");
         mapPanel.add(jButton23);
 
-        jButton24.setText("jButton24");
+        jButton24.setText("...");
         mapPanel.add(jButton24);
 
-        jButton25.setText("jButton25");
+        jButton25.setText("...");
         mapPanel.add(jButton25);
 
-        jButton26.setText("jButton26");
+        jButton26.setText("...");
         mapPanel.add(jButton26);
 
-        jButton27.setText("jButton27");
+        jButton21.setText("...");
+        mapPanel.add(jButton21);
+
+        jButton27.setText("...");
         mapPanel.add(jButton27);
 
-        jButton28.setText("jButton28");
+        jButton28.setText("...");
         mapPanel.add(jButton28);
 
-        jButton29.setText("jButton29");
+        jButton29.setText("...");
         mapPanel.add(jButton29);
 
-        jButton30.setText("jButton30");
+        jButton30.setText("...");
         mapPanel.add(jButton30);
 
         lblUsername.setText("User:");
@@ -449,6 +454,10 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnRollDiceActionPerformed
+
+    private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton22ActionPerformed
 
     private void saveScoreToFile() {
         try {
