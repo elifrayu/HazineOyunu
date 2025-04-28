@@ -7,6 +7,7 @@ package data1;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 /**
  *
@@ -29,8 +31,8 @@ public class GamePage extends javax.swing.JFrame {
     /**
      * Creates new form GamePage
      */
-    
     private ImageIcon playerIcon;
+
     public void playDiceSound() {
         try {
             File soundFile = new File("sounds/dice_roll.wav"); // yolumuz burası
@@ -68,6 +70,7 @@ public class GamePage extends javax.swing.JFrame {
         this.username = username;
         initComponents();
         setupButtonLinkedList();
+        btnRollDice.setIcon(resizeIcon("/images/dice.png", 40, 40));
         lblUsername.setText("User: " + username);
         lblScore.setText("Score: 0");
     }
@@ -82,8 +85,8 @@ public class GamePage extends javax.swing.JFrame {
             jButton21, jButton22, jButton23, jButton24, jButton25,
             jButton26, jButton27, jButton28, jButton29, jButton30
         };
-        
-        playerIcon = new ImageIcon(getClass().getResource("/images/player_icon.png"));
+
+        playerIcon = resizeIcon("/images/player_icon.png", 60, 60);
 
         String[] types = {"Treasure", "Trap", "Empty"};
         //ilk eleman head sonrakiler prev.next olacak
@@ -112,26 +115,37 @@ public class GamePage extends javax.swing.JFrame {
             //şimdiki düğüm bir sonrakinde prev olur
             prev = node;
 
-            buttons[i].setText((i + 1) + " " + type);
+            buttons[i].setText(""); // Yazıyı kaldır
+
             buttons[i].setPreferredSize(new Dimension(100, 60));
+
+// Type'a göre ikonu ayarla
             switch (type) {
                 case "Treasure" ->
-                    buttons[i].setBackground(Color.GREEN);
+                    buttons[i].setIcon(resizeIcon("/images/treasure.png", 60, 60));
                 case "Trap" ->
-                    buttons[i].setBackground(Color.RED);
+                    buttons[i].setIcon(resizeIcon("/images/trap.png", 60, 60));
                 case "Finish" ->
-                    buttons[i].setBackground(Color.darkGray);
+                    buttons[i].setIcon(resizeIcon("/images/finish.png", 60, 60));
                 case "Start" ->
-                    buttons[i].setBackground(Color.darkGray);
+                    buttons[i].setIcon(resizeIcon("/images/start.png", 60, 60));
                 default ->
-                    buttons[i].setBackground(Color.white);
+                    buttons[i].setIcon(resizeIcon("/images/empty.png", 60, 60));
             }
 
-            buttons[i].setOpaque(true);
-            buttons[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            //buttons[i].setEnabled(false);
+            buttons[i].setOpaque(false); // Arkaplanı saydam yap
+            buttons[i].setContentAreaFilled(false);
+            buttons[i].setBorderPainted(false);
+            buttons[i].setFocusPainted(false);
         }
         buttons[0].setIcon(playerIcon);
+    }
+
+    private ImageIcon resizeIcon(String path, int width, int height) {
+        ImageIcon icon = new ImageIcon(getClass().getResource(path));
+        Image img = icon.getImage();
+        Image resizedImage = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(resizedImage);
     }
 
     /**
@@ -182,7 +196,7 @@ public class GamePage extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        mapPanel.setLayout(new java.awt.GridLayout());
+        mapPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         jButton1.setText("jButton1");
         mapPanel.add(jButton1);
@@ -286,7 +300,6 @@ public class GamePage extends javax.swing.JFrame {
             }
         });
 
-        btnRollDice.setText("Roll Dice");
         btnRollDice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRollDiceActionPerformed(evt);
@@ -356,51 +369,122 @@ public class GamePage extends javax.swing.JFrame {
 
     private void btnRollDiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRollDiceActionPerformed
 
+//        playDiceSound();
+//
+//        int dice = (int) (Math.random() * 6) + 1;
+//        lblDice.setText("Rolled: " + dice);
+//        //dice kadar gidiyor
+//        for (int i = 0; i < dice && currentNode.next != null; i++) {
+//            currentNode = currentNode.next;
+//        }
+//
+//        String cellType = currentNode.type;
+//        switch (cellType) {
+//            case "Treasure" -> {
+//                score += 10;
+//                playSound("treasure.wav"); // 🎵 Treasure sesi çal
+//            }
+//
+//            case "Trap" -> {
+//                score -= 5;
+//                playSound("trap.wav"); // 🎵 Trap sesi çal
+//            }
+//        }
+//
+//        lblScore.setText("Score: " + score);
+//
+//        for (int i = 0; i < buttons.length; i++) {
+//            if (i == currentNode.index) {
+//                buttons[i].setIcon(playerIcon);
+//            } else {
+//                //buttons[i].setIcon(null); // diğerlerinde ikon olmasın
+//                switch (buttons[i].getText()) {
+//                    case "Treasure" ->
+//                        buttons[i].setBackground(Color.YELLOW);
+//                    case "Trap" ->
+//                        buttons[i].setBackground(Color.RED);
+//                    case "Empty" ->
+//                        buttons[i].setBackground(Color.LIGHT_GRAY);
+//                }
+//            }
+//        }
+//
+//        if (currentNode.type.equals("Finish")) {
+//            JOptionPane.showMessageDialog(this, "Level 1 completed! Your score: " + score);
+//            saveScoreToFile();
+//
+//            // 🎯 Burada this yerine null verdik!
+//            int choice = JOptionPane.showConfirmDialog(
+//                    null, "Do you want to continue to Level 2?",
+//                    "Continue?",
+//                    JOptionPane.YES_NO_OPTION
+//            );
+//
+//            if (choice == JOptionPane.YES_OPTION) {
+//                this.dispose();
+//                new GamePageLevel2(username).setVisible(true);
+//            } else {
+//                this.dispose();
+//                new MainMenu().setVisible(true);
+//            }
+//        }
         playDiceSound();
-
+        
         int dice = (int) (Math.random() * 6) + 1;
+        btnRollDice.setIcon(resizeIcon("/images/dice.png", 40, 40));
+        
         lblDice.setText("Rolled: " + dice);
-        //dice kadar gidiyor
+
+        // Zar kadar ilerle
         for (int i = 0; i < dice && currentNode.next != null; i++) {
             currentNode = currentNode.next;
         }
 
+        // Hücrenin tipine göre skor güncelle
         String cellType = currentNode.type;
         switch (cellType) {
             case "Treasure" -> {
                 score += 10;
-                playSound("treasure.wav"); // 🎵 Treasure sesi çal
+                playSound("treasure.wav");
             }
-
             case "Trap" -> {
                 score -= 5;
-                playSound("trap.wav"); // 🎵 Trap sesi çal
+                playSound("trap.wav");
             }
         }
 
         lblScore.setText("Score: " + score);
 
-        for (int i = 0; i < buttons.length; i++) {
-            if (i == currentNode.index) {
-                buttons[i].setIcon(playerIcon);
+        // BÜTÜN butonları güncelle
+        SpotNode temp = head;
+        while (temp != null) {
+            JButton button = buttons[temp.index];
+            if (temp.index == currentNode.index) {
+                // Oyuncunun olduğu yere player ikonu koy
+                button.setIcon(playerIcon);
             } else {
-                buttons[i].setIcon(null); // diğerlerinde ikon olmasın
-                switch (buttons[i].getText()) {
+                // Diğer butonlara kendi ikonlarını geri koy
+                switch (temp.type) {
                     case "Treasure" ->
-                        buttons[i].setBackground(Color.YELLOW);
+                        button.setIcon(resizeIcon("/images/treasure.png", 60, 60));
                     case "Trap" ->
-                        buttons[i].setBackground(Color.RED);
-                    case "Empty" ->
-                        buttons[i].setBackground(Color.LIGHT_GRAY);
+                        button.setIcon(resizeIcon("/images/trap.png", 60, 60));
+                    case "Finish" ->
+                        button.setIcon(resizeIcon("/images/finish.png", 60, 60));
+                    case "Start" ->
+                        button.setIcon(resizeIcon("/images/start.png", 60, 60));
+                    default ->
+                        button.setIcon(resizeIcon("/images/empty.png", 60, 60));
                 }
             }
+            temp = temp.next;
         }
 
+        // Eğer varış noktası bitiş ise
         if (currentNode.type.equals("Finish")) {
             JOptionPane.showMessageDialog(this, "Level 1 completed! Your score: " + score);
             saveScoreToFile();
 
-            // 🎯 Burada this yerine null verdik!
             int choice = JOptionPane.showConfirmDialog(
                     null, "Do you want to continue to Level 2?",
                     "Continue?",
@@ -415,7 +499,6 @@ public class GamePage extends javax.swing.JFrame {
                 new MainMenu().setVisible(true);
             }
         }
-
 
     }//GEN-LAST:event_btnRollDiceActionPerformed
 

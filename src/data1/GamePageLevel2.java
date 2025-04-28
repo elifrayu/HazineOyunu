@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import java.awt.Color;
+import java.awt.Image;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -81,6 +82,7 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         initComponents();
 
         setupButtonLinkedListLevel2();
+        btnRollDice.setIcon(resizeIcon("/images/dice.png", 40, 40));
         lblUsername.setText("User: " + username);
         lblScore.setText("Score: 0");
     }
@@ -95,7 +97,7 @@ public class GamePageLevel2 extends javax.swing.JFrame {
             jButton26, jButton27, jButton28, jButton29, jButton30
         };
 
-        playerIcon = new ImageIcon(getClass().getResource("/images/player_icon.png"));
+        playerIcon = resizeIcon("/images/player_icon.png", 60, 60);
 
         String[] types = {"Treasure", "Trap", "Empty", "Forward", "Backward"};
         head = null;
@@ -125,24 +127,24 @@ public class GamePageLevel2 extends javax.swing.JFrame {
             prev = node;
 
             // Burada tasarımdaki hazır butonları ayarlıyoruz
-            buttons[i].setText((i + 1) + " " + type);
-            //buttons[i].setEnabled(false);
+            buttons[i].setText(""); // yazıyı tamamen kaldır
 
+// Type'a göre ikon veriyoruz
             switch (type) {
                 case "Treasure" ->
-                    buttons[i].setBackground(Color.GREEN);
+                    buttons[i].setIcon(resizeIcon("/images/treasure.png", 60, 60));
                 case "Trap" ->
-                    buttons[i].setBackground(Color.RED);
+                    buttons[i].setIcon(resizeIcon("/images/trap.png", 60, 60));
                 case "Forward" ->
-                    buttons[i].setBackground(Color.lightGray);
+                    buttons[i].setIcon(resizeIcon("/images/forward.png", 60, 60));
                 case "Backward" ->
-                    buttons[i].setBackground(Color.darkGray);
+                    buttons[i].setIcon(resizeIcon("/images/backward.png", 60, 60));
                 case "Finish" ->
-                    buttons[i].setBackground(Color.BLUE);
+                    buttons[i].setIcon(resizeIcon("/images/finish.png", 60, 60));
                 case "Start" ->
-                    buttons[i].setBackground(Color.BLUE);
+                    buttons[i].setIcon(resizeIcon("/images/start.png", 60, 60));
                 default ->
-                    buttons[i].setBackground(Color.white);
+                    buttons[i].setIcon(resizeIcon("/images/empty.png", 60, 60));
             }
 
             buttons[i].setOpaque(true);
@@ -223,7 +225,6 @@ public class GamePageLevel2 extends javax.swing.JFrame {
             }
         });
 
-        btnRollDice.setText("Roll Dice");
         btnRollDice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRollDiceActionPerformed(evt);
@@ -358,7 +359,7 @@ public class GamePageLevel2 extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addComponent(mapPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addComponent(lblUsername)
                 .addGap(18, 18, 18)
                 .addComponent(lblScore)
@@ -380,6 +381,7 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         playDiceSound();
 
         int dice = (int) (Math.random() * 6) + 1;
+        btnRollDice.setIcon(resizeIcon("/images/dice.png", 40, 40));
         lblDice.setText("Rolled: " + dice);
 
         // Zar kadar ilerle
@@ -417,31 +419,10 @@ public class GamePageLevel2 extends javax.swing.JFrame {
                 break;
             }
 
-            buttons[i].setIcon(null); // ikonları temizle
-            buttons[i].setText((i + 1) + " " + temp.type); // kendi type'ını yaz
-
             // İcon eklemek
             if (i == currentNode.index) {
                 buttons[i].setIcon(playerIcon);
-                buttons[i].setText(""); // ikon olunca text sil
-            }
-
-            // Renk güncellemesi - Level 2'de kullandığımız tasarıma uygun
-            switch (temp.type) {
-                case "Treasure" ->
-                    buttons[i].setBackground(Color.GREEN); // Level 2'de green yapmıştık
-                case "Trap" ->
-                    buttons[i].setBackground(Color.RED);
-                case "Forward" ->
-                    buttons[i].setBackground(Color.LIGHT_GRAY);
-                case "Backward" ->
-                    buttons[i].setBackground(Color.DARK_GRAY);
-                case "Finish" ->
-                    buttons[i].setBackground(Color.BLUE);
-                case "Start" ->
-                    buttons[i].setBackground(Color.BLUE);
-                default ->
-                    buttons[i].setBackground(Color.WHITE);
+                
             }
 
             temp = temp.next;
@@ -473,6 +454,13 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error writing to file: " + e.getMessage());
         }
+    }
+
+    private ImageIcon resizeIcon(String path, int width, int height) {
+        ImageIcon icon = new ImageIcon(getClass().getResource(path));
+        Image img = icon.getImage();
+        Image resizedImage = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(resizedImage);
     }
 
     /**

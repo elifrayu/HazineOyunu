@@ -79,3 +79,13 @@ elif, level1, 20
 TestUser, level2, 30
 TestUser, level2, -5
 TestUser, level2, 5
+ışıl, level1, 10
+ışıl, level2, 20
+elf, level1, 10
+r, level1, 40
+d, level1, -5
+r, level1, 20
+e, level1, -10
+TestUser, level2, 15
+TestUser, level2, 15
+TestUser, level2, -25

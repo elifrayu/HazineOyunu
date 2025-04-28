@@ -56,7 +56,7 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
               <Component id="mapPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="26" max="32767" attributes="0"/>
+              <EmptySpace pref="43" max="32767" attributes="0"/>
               <Component id="lblUsername" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="lblScore" min="-2" max="-2" attributes="0"/>
@@ -72,9 +72,6 @@
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JButton" name="btnRollDice">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Roll Dice"/>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRollDiceActionPerformed"/>
       </Events>
