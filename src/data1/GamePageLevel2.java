@@ -446,6 +446,7 @@ public class GamePageLevel2 extends javax.swing.JFrame {
 
             temp = temp.next;
         }
+
         if (currentNode.type.equals("Finish")) {
             JOptionPane.showMessageDialog(this, "Game Over! Final Score: " + score);
             saveScoreToFile();
