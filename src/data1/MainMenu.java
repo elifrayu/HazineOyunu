@@ -4,9 +4,11 @@
  */
 package data1;
 
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,27 +24,27 @@ public class MainMenu extends javax.swing.JFrame {
         setContentPane(new BackgroundPanel("/images/background.jpg"));
         initComponents();
     }
+    
+    
     private void showHowToPlay() {
-    String message = """
-    <html>
-    <center>
-    <h2 style='color:#8B4513;'>🎲 How to Play 🎲</h2>
-    <p style='font-size:14px;'>
-    ➡️ Roll the dice to move forward.<br><br>
-    🏴‍☠️ Land on a treasure spot to <b style='color:green;'>gain +10 points</b>.<br><br>
-    ☠️ Land on a trap spot to <b style='color:red;'>lose -5 points</b>.<br><br>
-    🔄 'Forward' jumps you 3 steps ahead.<br><br>
-    🔙 'Backward' sends you 3 steps back.<br><br>
-    🏁 Reach the 'Finish' spot to complete the level!<br><br>
-    </p>
-    <h3 style='color:#DAA520;'>Good luck, adventurer! 🗺️</h3>
-    </center>
-    </html>
-    """;
+    ImageIcon originalIcon = new ImageIcon(getClass().getResource("/images/how_to_play_background.png"));
 
-    ImageIcon icon = new ImageIcon(getClass().getResource("/images/map_icon.png")); // small icon
-    JOptionPane.showMessageDialog(this, message, "How to Play", JOptionPane.INFORMATION_MESSAGE, icon);
+    // Resmi küçültelim (örnek: 500x400 boyutlarına)
+    Image scaledImage = originalIcon.getImage().getScaledInstance(500, 400, Image.SCALE_SMOOTH);
+    ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+    JLabel label = new JLabel(scaledIcon);
+
+    JOptionPane.showMessageDialog(
+        this,
+        label,
+        "",
+        JOptionPane.PLAIN_MESSAGE
+    );
 }
+
+
+
 
 
     /**
