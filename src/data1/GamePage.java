@@ -6,8 +6,10 @@ package data1;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.BufferedWriter;
@@ -39,6 +41,7 @@ public class GamePage extends javax.swing.JFrame {
      * Creates new form GamePage
      */
     private ImageIcon playerIcon;
+
 
     public void playDiceSound() {
         try {
@@ -76,62 +79,76 @@ public class GamePage extends javax.swing.JFrame {
     public GamePage(String username) {
         this.username = username;
         initComponents();
+       
         // Profesyonel bilgi paneli
         JPanel infoPanel = new JPanel();
-    infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-    infoPanel.setBackground(new Color(255, 243, 205));
-    infoPanel.setBorder(BorderFactory.createTitledBorder("Player Info"));
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setBackground(new Color(255, 243, 205));
+        infoPanel.setBorder(BorderFactory.createTitledBorder("Player Info"));
 
-    lblUsername.setFont(new Font("Arial", Font.BOLD, 16));
-    lblScore.setFont(new Font("Arial", Font.BOLD, 16));
-    lblUsername.setForeground(new Color(102, 51, 0));
-    lblScore.setForeground(new Color(102, 51, 0));
+        lblUsername.setFont(new Font("Arial", Font.BOLD, 16));
+        lblScore.setFont(new Font("Arial", Font.BOLD, 16));
+        lblUsername.setForeground(new Color(102, 51, 0));
+        lblScore.setForeground(new Color(102, 51, 0));
 
-    infoPanel.add(lblUsername);
-    infoPanel.add(Box.createVerticalStrut(10));
-    infoPanel.add(lblScore);
+        infoPanel.add(lblUsername);
+        infoPanel.add(Box.createVerticalStrut(10));
+        infoPanel.add(lblScore);
 
-    GroupLayout layout = new GroupLayout(getContentPane());
-    getContentPane().setLayout(layout);
+        btnBack.setText("🔙 Back to Menu");
+        btnBack.setBackground(new Color(255, 215, 130));
+        btnBack.setForeground(new Color(102, 51, 0));
+        btnBack.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnBack.setFocusPainted(false);
+        btnBack.setBorder(BorderFactory.createLineBorder(new Color(153, 102, 0), 2));
+        btnBack.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-    layout.setHorizontalGroup(
-        layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(50)
-                .addComponent(btnBack, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(60)
-                .addComponent(btnRollDice, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-                .addGap(40)
-                .addComponent(lblDice, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
-                .addComponent(infoPanel, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE)
-                .addGap(40))
-            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(80, Short.MAX_VALUE)
-                .addComponent(mapPanel, GroupLayout.PREFERRED_SIZE, 800, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(80, Short.MAX_VALUE))
-    );
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
 
-    layout.setVerticalGroup(
-        layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20)
-                .addComponent(btnBack)
-                .addGap(20)
-                .addComponent(mapPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addGap(30)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRollDice, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDice, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(infoPanel, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(40, Short.MAX_VALUE))
-    );
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(50)
+                                .addComponent(btnBack, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(60)
+                                .addComponent(btnRollDice, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+                                .addGap(40)
+                                .addComponent(lblDice, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                                .addComponent(infoPanel, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE)
+                                .addGap(40))
+                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap(80, Short.MAX_VALUE)
+                                .addComponent(mapPanel, GroupLayout.PREFERRED_SIZE, 800, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(80, Short.MAX_VALUE))
+        );
 
-    pack();
+        layout.setVerticalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(20)
+                                .addComponent(btnBack, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+                                .addGap(20)
+                                .addComponent(mapPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addGap(30)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(btnRollDice, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblDice, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(infoPanel, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(40, Short.MAX_VALUE))
+        );
+
+        setSize(1000, 700);
+        setLocationRelativeTo(null);
         setupButtonLinkedList();
         btnRollDice.setIcon(resizeIcon("/images/dice.png", 40, 40));
+        btnRollDice.setBackground(new Color(255, 215, 100)); // Altın sarısı tonu
+        btnRollDice.setForeground(new Color(102, 51, 0)); // Yazı rengi uyumlu kahverengi
+        btnRollDice.setFocusPainted(false); // Kenar efekti yok
+        btnRollDice.setBorder(BorderFactory.createLineBorder(new Color(160, 82, 45), 2)); // Sınır çizgisi
         lblUsername.setText("User: " + username);
         lblScore.setText("Score: 0");
     }
@@ -376,16 +393,16 @@ public class GamePage extends javax.swing.JFrame {
                 .addComponent(btnRollDice, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44)
                 .addComponent(lblDice, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 216, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 338, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblScore, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(79, 79, 79))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(142, Short.MAX_VALUE)
+                    .addContainerGap(202, Short.MAX_VALUE)
                     .addComponent(mapPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 709, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(86, Short.MAX_VALUE)))
+                    .addContainerGap(148, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -400,16 +417,16 @@ public class GamePage extends javax.swing.JFrame {
                         .addGap(11, 11, 11))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnBack)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 523, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 543, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnRollDice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblDice, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(78, 78, 78))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(326, Short.MAX_VALUE)
+                    .addContainerGap(336, Short.MAX_VALUE)
                     .addComponent(mapPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(328, Short.MAX_VALUE)))
+                    .addContainerGap(338, Short.MAX_VALUE)))
         );
 
         pack();

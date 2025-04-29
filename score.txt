@@ -1,2 +1,5 @@
 
 elifrayu, level1, -5
+eliff, level1, 20
+eliff, level2, -10
+rahime, level1, 0

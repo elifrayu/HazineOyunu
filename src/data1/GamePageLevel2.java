@@ -4,10 +4,6 @@
  */
 package data1;
 
-/**
- *
- * @author rahimecalik
- */
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
