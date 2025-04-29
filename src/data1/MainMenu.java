@@ -4,12 +4,28 @@
  */
 package data1;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 /**
  *
@@ -24,28 +40,23 @@ public class MainMenu extends javax.swing.JFrame {
         setContentPane(new BackgroundPanel("/images/background.jpg"));
         initComponents();
     }
-    
-    
+
     private void showHowToPlay() {
-    ImageIcon originalIcon = new ImageIcon(getClass().getResource("/images/how_to_play_background.png"));
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/images/how_to_play.png"));
 
-    // Resmi küçültelim (örnek: 500x400 boyutlarına)
-    Image scaledImage = originalIcon.getImage().getScaledInstance(500, 400, Image.SCALE_SMOOTH);
-    ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        // Resmi küçültelim (örnek: 500x400 boyutlarına)
+        Image scaledImage = originalIcon.getImage().getScaledInstance(600, 800, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
-    JLabel label = new JLabel(scaledIcon);
+        JLabel label = new JLabel(scaledIcon);
 
-    JOptionPane.showMessageDialog(
-        this,
-        label,
-        "",
-        JOptionPane.PLAIN_MESSAGE
-    );
-}
-
-
-
-
+        JOptionPane.showMessageDialog(
+                this,
+                label,
+                "",
+                JOptionPane.PLAIN_MESSAGE
+        );
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -157,14 +168,66 @@ public class MainMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnStartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartGameActionPerformed
-        // TODO add your handling code here:
-        String username = JOptionPane.showInputDialog(this, "Enter your username:");
-    if (username != null && !username.trim().isEmpty()) {
-        
-        JOptionPane.showMessageDialog(this, "Welcome " + username + "!");
-        new GamePage(username).setVisible(true); // GamePage penceren varsa açılır
-        this.dispose(); // MainMenu kapanır
-    }
+        // Tema renkleri
+        JDialog dialog = new JDialog(this, "🏴‍☠️ Start Your Adventure", true);
+        dialog.setSize(400, 250);
+        dialog.setLocationRelativeTo(this);
+        dialog.setLayout(null);
+        dialog.getContentPane().setBackground(new Color(255, 243, 205)); // kum rengi
+
+        JLabel title = new JLabel("🏝️ Welcome, Explorer!");
+        title.setBounds(90, 20, 300, 25);
+        title.setFont(new Font("Georgia", Font.BOLD, 18));
+        title.setForeground(new Color(102, 51, 0));
+
+        JLabel prompt = new JLabel("Enter your username:");
+        prompt.setBounds(40, 60, 300, 20);
+        prompt.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        prompt.setForeground(new Color(102, 51, 0));
+
+        JTextField txtUsername = new JTextField();
+        txtUsername.setBounds(40, 85, 300, 30);
+        txtUsername.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
+        JButton btnStart = new JButton("🎮 Start Game");
+        btnStart.setBounds(40, 130, 140, 35);
+        btnStart.setBackground(new Color(255, 215, 130)); // Altın sarısı
+        btnStart.setForeground(new Color(102, 51, 0));
+        btnStart.setFocusPainted(false);
+
+        JButton btnCancel = new JButton("🔙 Go Back");
+        btnCancel.setBounds(200, 130, 140, 35);
+        btnCancel.setBackground(new Color(200, 200, 200));
+        btnCancel.setForeground(new Color(102, 51, 0));
+        btnCancel.setFocusPainted(false);
+
+        dialog.add(title);
+        dialog.add(prompt);
+        dialog.add(txtUsername);
+        dialog.add(btnStart);
+        dialog.add(btnCancel);
+
+        btnStart.addActionListener(e -> {
+            String username = txtUsername.getText().trim();
+            if (!username.isEmpty()) {
+                dialog.dispose();
+                JOptionPane.showMessageDialog(this,
+                        "🏴‍☠️ Welcome, " + username + "! Let the treasure hunt begin!",
+                        "Adventure Ready!",
+                        JOptionPane.INFORMATION_MESSAGE);
+                new GamePage(username).setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(dialog,
+                        "❗ Username cannot be empty!",
+                        "Input Error",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        });
+
+        btnCancel.addActionListener(e -> dialog.dispose());
+
+        dialog.setVisible(true);
     }//GEN-LAST:event_btnStartGameActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
@@ -173,66 +236,120 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnScoreboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnScoreboardActionPerformed
-        String username = JOptionPane.showInputDialog(this, "Enter your username:");
-    if (username == null || username.trim().isEmpty()) {
-        return;
-    }
+        JDialog dialog = new JDialog(this, "🏆 Score Table", true);
+        dialog.setSize(420, 280);
+        dialog.setLocationRelativeTo(this);
+        dialog.setLayout(null);
+        dialog.getContentPane().setBackground(new Color(255, 243, 205)); // Kum rengi arka plan
 
-    ScoreBST bst = new ScoreBST();
-    try {
-        BufferedReader br = new BufferedReader(new FileReader("score.txt"));
-        String line;
-        while ((line = br.readLine()) != null) {
-            String[] parts = line.split(",");
-            if (parts.length >= 3) {
-                String user = parts[0].trim();
-                String level = parts[1].trim();
-                int score = Integer.parseInt(parts[2].trim());
+        JLabel title = new JLabel("📜 View Your Scores!");
+        title.setBounds(90, 15, 300, 25);
+        title.setFont(new Font("Georgia", Font.BOLD, 18));
+        title.setForeground(new Color(102, 51, 0));
 
-                if (user.equalsIgnoreCase(username)) {
-                    bst.insert(score, level);
-                }
+        JLabel prompt = new JLabel("Enter your username:");
+        prompt.setBounds(40, 55, 300, 20);
+        prompt.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        prompt.setForeground(new Color(102, 51, 0));
+
+        JTextField txtUsername = new JTextField();
+        txtUsername.setBounds(40, 80, 320, 30);
+        txtUsername.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
+        JButton btnShow = new JButton("📊 Show Scores");
+        btnShow.setBounds(40, 130, 140, 35);
+        btnShow.setBackground(new Color(255, 215, 130));
+        btnShow.setForeground(new Color(102, 51, 0));
+        btnShow.setFocusPainted(false);
+
+        JButton btnCancel = new JButton("🔙 Go Back");
+        btnCancel.setBounds(220, 130, 140, 35);
+        btnCancel.setBackground(new Color(200, 200, 200));
+        btnCancel.setForeground(new Color(102, 51, 0));
+        btnCancel.setFocusPainted(false);
+
+        dialog.add(title);
+        dialog.add(prompt);
+        dialog.add(txtUsername);
+        dialog.add(btnShow);
+        dialog.add(btnCancel);
+
+        btnShow.addActionListener(e -> {
+            String username = txtUsername.getText().trim();
+            if (username.isEmpty()) {
+                JOptionPane.showMessageDialog(dialog, "❗ Username cannot be empty!");
+                return;
             }
-        }
-        br.close();
 
-        if (bst.root == null) {
-            JOptionPane.showMessageDialog(this, "No scores found for user: " + username);
-            return;
-        }
+            ScoreBST bst = new ScoreBST();
+            try (BufferedReader br = new BufferedReader(new FileReader("score.txt"))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split(",");
+                    if (parts.length >= 3) {
+                        String user = parts[0].trim();
+                        String level = parts[1].trim();
+                        int score = Integer.parseInt(parts[2].trim());
 
-        // Skorları yazdıralım
-        StringBuilder allScores = new StringBuilder();
-        collectScores(bst.root, allScores);
+                        if (user.equalsIgnoreCase(username)) {
+                            bst.insert(score, level);
+                        }
+                    }
+                }
 
-        ScoreNode best = bst.findMax(bst.root);
-        ScoreNode worst = bst.findMin(bst.root);
-        
+                if (bst.root == null) {
+                    JOptionPane.showMessageDialog(dialog, "No scores found for user: " + username);
+                    return;
+                }
 
-        String result = "User: " + username + "\n"
-                      + "All Scores:\n" + allScores.toString() + "\n"
-                      + "Best Score: " + best.score + " (" + best.level + ")\n"
-                      + "Worst Score: " + worst.score + " (" + worst.level + ")";
+                StringBuilder allScores = new StringBuilder();
+                collectScoresInline(bst.root, allScores);
+                ScoreNode best = bst.findMax(bst.root);
+                ScoreNode worst = bst.findMin(bst.root);
 
-        JOptionPane.showMessageDialog(this, result, "Score Table", JOptionPane.INFORMATION_MESSAGE);
+                JTextArea area = new JTextArea();
+                area.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+                area.setBackground(new Color(255, 250, 230));
+                area.setForeground(new Color(60, 30, 0));
+                area.setEditable(false);
+                area.setText(
+                        "🏴 User: " + username + "\n\n"
+                        + "📜 All Scores:\n" + allScores.toString()
+                        + "\n\n🏆 Best Score: " + best.score + " (" + best.level + ")"
+                        + "\n💀 Worst Score: " + worst.score + " (" + worst.level + ")"
+                );
+                JScrollPane scroll = new JScrollPane(area);
+                scroll.setPreferredSize(new Dimension(400, 250));
+                scroll.setBorder(BorderFactory.createLineBorder(new Color(160, 82, 45), 2));
 
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Error reading scores: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, scroll, "🏆 Score Table", JOptionPane.PLAIN_MESSAGE);
+                dialog.dispose();
+
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(dialog, "Error: " + ex.getMessage());
+            }
+        });
+
+        btnCancel.addActionListener(e -> dialog.dispose());
+
+        dialog.setVisible(true);
     }
-    
-}
 
-    
 // Skorları inorder toplar
-private void collectScores(ScoreNode root, StringBuilder sb) {
-    if (root != null) {
-        collectScores(root.left, sb);
-        sb.append(root.score).append(" (").append(root.level).append(")\n");
-        collectScores(root.right, sb);
-    }
+    private void collectScores(ScoreNode root, StringBuilder sb) {
+        if (root != null) {
+            collectScores(root.left, sb);
+            sb.append(root.score).append(" (").append(root.level).append(")\n");
+            collectScores(root.right, sb);
+        }
     }//GEN-LAST:event_btnScoreboardActionPerformed
-
+    private void collectScoresInline(ScoreNode root, StringBuilder sb) {
+        if (root != null) {
+            collectScoresInline(root.left, sb);
+            sb.append(root.score).append(" (").append(root.level).append(")  |  ");
+            collectScoresInline(root.right, sb);
+        }
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         showHowToPlay();
     }//GEN-LAST:event_jButton1ActionPerformed

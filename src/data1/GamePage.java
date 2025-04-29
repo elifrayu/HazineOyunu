@@ -6,6 +6,7 @@ package data1;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.BufferedWriter;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -139,6 +141,7 @@ public class GamePage extends javax.swing.JFrame {
             buttons[i].setFocusPainted(false);
         }
         buttons[0].setIcon(playerIcon);
+ 
     }
 
     private ImageIcon resizeIcon(String path, int width, int height) {
@@ -428,12 +431,16 @@ public class GamePage extends javax.swing.JFrame {
 //                new MainMenu().setVisible(true);
 //            }
 //        }
-        playDiceSound();
+//        
+playDiceSound();
         
         int dice = (int) (Math.random() * 6) + 1;
         btnRollDice.setIcon(resizeIcon("/images/dice.png", 40, 40));
         
         lblDice.setText("Rolled: " + dice);
+        
+        // Şu anki hücreyi kaydet (başlangıçta nereden hareket ettiğimizi biliyoruz)
+        SpotNode previousNode = currentNode;
 
         // Zar kadar ilerle
         for (int i = 0; i < dice && currentNode.next != null; i++) {
@@ -454,6 +461,20 @@ public class GamePage extends javax.swing.JFrame {
         }
 
         lblScore.setText("Score: " + score);
+        
+        // Bilgilendirme paneli: Nereden nereye gidildiğini ve bonusları göster
+    String message = "You rolled a " + dice + "!\n";
+    message += "You moved from position " + previousNode.index + " to position " + currentNode.index + ".\n";
+    message += "You landed on a " + cellType + "!\n";
+
+    if (cellType.equals("Treasure")) {
+        message += "You gained 10 points!\n";
+    } else if (cellType.equals("Trap")) {
+        message += "You lost 5 points!\n";
+    }
+
+    // Bilgilendirme penceresini göster
+    JOptionPane.showMessageDialog(this, message, "Move Information", JOptionPane.INFORMATION_MESSAGE);
 
         // BÜTÜN butonları güncelle
         SpotNode temp = head;
@@ -499,7 +520,6 @@ public class GamePage extends javax.swing.JFrame {
                 new MainMenu().setVisible(true);
             }
         }
-
     }//GEN-LAST:event_btnRollDiceActionPerformed
 
     private void saveScoreToFile() {
