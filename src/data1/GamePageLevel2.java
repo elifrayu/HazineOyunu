@@ -230,66 +230,88 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         mapPanel.setLayout(new java.awt.GridLayout(5, 6, 10, 10));
 
         jButton1.setText("...");
+        jButton1.setBorderPainted(false);
+        jButton1.setContentAreaFilled(false);
         mapPanel.add(jButton1);
 
         jButton2.setText("...");
+        jButton2.setContentAreaFilled(false);
         mapPanel.add(jButton2);
 
         jButton3.setText("...");
+        jButton3.setContentAreaFilled(false);
         mapPanel.add(jButton3);
 
         jButton4.setText("...");
+        jButton4.setContentAreaFilled(false);
         mapPanel.add(jButton4);
 
         jButton5.setText("...");
+        jButton5.setContentAreaFilled(false);
         mapPanel.add(jButton5);
 
         jButton6.setText("...");
+        jButton6.setContentAreaFilled(false);
         mapPanel.add(jButton6);
 
         jButton7.setText("...");
+        jButton7.setContentAreaFilled(false);
         mapPanel.add(jButton7);
 
         jButton8.setText("...");
+        jButton8.setContentAreaFilled(false);
         mapPanel.add(jButton8);
 
         jButton9.setText("...");
+        jButton9.setContentAreaFilled(false);
         mapPanel.add(jButton9);
 
         jButton10.setText("...");
+        jButton10.setContentAreaFilled(false);
         mapPanel.add(jButton10);
 
         jButton11.setText("...");
+        jButton11.setContentAreaFilled(false);
         mapPanel.add(jButton11);
 
         jButton12.setText("...");
+        jButton12.setContentAreaFilled(false);
         mapPanel.add(jButton12);
 
         jButton13.setText("...");
+        jButton13.setContentAreaFilled(false);
         mapPanel.add(jButton13);
 
         jButton14.setText("...");
+        jButton14.setContentAreaFilled(false);
         mapPanel.add(jButton14);
 
         jButton15.setText("...");
+        jButton15.setContentAreaFilled(false);
         mapPanel.add(jButton15);
 
         jButton16.setText("...");
+        jButton16.setContentAreaFilled(false);
         mapPanel.add(jButton16);
 
         jButton17.setText("...");
+        jButton17.setContentAreaFilled(false);
         mapPanel.add(jButton17);
 
         jButton18.setText("...");
+        jButton18.setContentAreaFilled(false);
         mapPanel.add(jButton18);
 
         jButton19.setText("...");
+        jButton19.setContentAreaFilled(false);
         mapPanel.add(jButton19);
 
         jButton20.setText("...");
+        jButton20.setContentAreaFilled(false);
         mapPanel.add(jButton20);
 
         jButton22.setText("...");
+        jButton22.setContentAreaFilled(false);
         jButton22.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton22ActionPerformed(evt);
@@ -298,30 +320,39 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         mapPanel.add(jButton22);
 
         jButton23.setText("...");
+        jButton23.setContentAreaFilled(false);
         mapPanel.add(jButton23);
 
         jButton24.setText("...");
+        jButton24.setContentAreaFilled(false);
         mapPanel.add(jButton24);
 
         jButton25.setText("...");
+        jButton25.setContentAreaFilled(false);
         mapPanel.add(jButton25);
 
         jButton26.setText("...");
+        jButton26.setContentAreaFilled(false);
         mapPanel.add(jButton26);
 
         jButton21.setText("...");
+        jButton21.setContentAreaFilled(false);
         mapPanel.add(jButton21);
 
         jButton27.setText("...");
+        jButton27.setContentAreaFilled(false);
         mapPanel.add(jButton27);
 
         jButton28.setText("...");
+        jButton28.setContentAreaFilled(false);
         mapPanel.add(jButton28);
 
         jButton29.setText("...");
+        jButton29.setContentAreaFilled(false);
         mapPanel.add(jButton29);
 
         jButton30.setText("...");
+        jButton30.setContentAreaFilled(false);
         mapPanel.add(jButton30);
 
         lblUsername.setText("User:");
@@ -332,6 +363,12 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblScore, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE))
+                .addGap(51, 51, 51))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -340,22 +377,16 @@ public class GamePageLevel2 extends javax.swing.JFrame {
                         .addGap(121, 121, 121)
                         .addComponent(lblDice))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
+                        .addGap(49, 49, 49)
                         .addComponent(mapPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 643, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(285, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblScore, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE))
-                .addGap(51, 51, 51))
+                .addContainerGap(298, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(60, 60, 60)
+                .addGap(41, 41, 41)
                 .addComponent(mapPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 339, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 358, Short.MAX_VALUE)
                 .addComponent(lblUsername)
                 .addGap(18, 18, 18)
                 .addComponent(lblScore)
