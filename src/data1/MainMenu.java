@@ -208,22 +208,48 @@ public class MainMenu extends javax.swing.JFrame {
         dialog.add(btnCancel);
 
         btnStart.addActionListener(e -> {
-            String username = txtUsername.getText().trim();
-            if (!username.isEmpty()) {
-                dialog.dispose();
-                JOptionPane.showMessageDialog(this,
-                        "🏴‍☠️ Welcome, " + username + "! Let the treasure hunt begin!",
-                        "Adventure Ready!",
-                        JOptionPane.INFORMATION_MESSAGE);
-                new GamePage(username).setVisible(true);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(dialog,
-                        "❗ Username cannot be empty!",
-                        "Input Error",
-                        JOptionPane.WARNING_MESSAGE);
-            }
-        });
+    String username = txtUsername.getText().trim();
+
+    if (!username.isEmpty()) {
+        dialog.dispose();
+
+        // Özel hoş geldin paneli oluştur
+        JPanel welcomePanel = new JPanel();
+        welcomePanel.setLayout(new BoxLayout(welcomePanel, BoxLayout.Y_AXIS));
+        welcomePanel.setBackground(new Color(255, 243, 205));
+        welcomePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel lblTitle = new JLabel("🏴‍☠️ Welcome, " + username + "!");
+        lblTitle.setFont(new Font("Georgia", Font.BOLD, 20));
+        lblTitle.setForeground(new Color(102, 51, 0));
+        lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel lblSubtitle = new JLabel("Let the treasure hunt begin!");
+        lblSubtitle.setFont(new Font("Segoe UI", Font.ITALIC, 14));
+        lblSubtitle.setForeground(new Color(80, 40, 0));
+        lblSubtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        welcomePanel.add(lblTitle);
+        welcomePanel.add(Box.createVerticalStrut(10));
+        welcomePanel.add(lblSubtitle);
+
+        JOptionPane.showMessageDialog(
+            this,
+            welcomePanel,
+            "Adventure Ready!",
+            JOptionPane.PLAIN_MESSAGE
+        );
+
+        new GamePage(username).setVisible(true);
+        this.dispose();
+
+    } else {
+        JOptionPane.showMessageDialog(dialog,
+                "❗ Username cannot be empty!",
+                "Input Error",
+                JOptionPane.WARNING_MESSAGE);
+    }
+});
 
         btnCancel.addActionListener(e -> dialog.dispose());
 

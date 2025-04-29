@@ -380,61 +380,106 @@ public class GamePageLevel2 extends javax.swing.JFrame {
     private void btnRollDiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRollDiceActionPerformed
         playDiceSound();
 
-        int dice = (int) (Math.random() * 6) + 1;
-        btnRollDice.setIcon(resizeIcon("/images/dice.png", 40, 40));
-        lblDice.setText("Rolled: " + dice);
+    // Zarın değerini hesapla
+    int dice = (int) (Math.random() * 6) + 1;
+    btnRollDice.setIcon(resizeIcon("/images/dice.png", 40, 40));
+    lblDice.setText("Rolled: " + dice);
 
-        // Zar kadar ilerle
-        for (int i = 0; i < dice && currentNode.next != null; i++) {
-            currentNode = currentNode.next;
+    // Şu anki hücreyi kaydet
+    SpotNode previousNode = currentNode;
+    int previousIndex = currentNode.index;
+
+    // Zar kadar ilerle
+    for (int i = 0; i < dice && currentNode.next != null; i++) {
+        currentNode = currentNode.next;
+    }
+
+    // Eğer jump varsa (maksimum 3 kere zıplayabilir güvenlik için)
+    int jumpCount = 0;
+    while (currentNode.jump != null && jumpCount < 3) {
+        currentNode = currentNode.jump;
+        jumpCount++;
+    }
+
+    // Hücre tipine göre puan değişimi ve ses efekti
+    String cellType = currentNode.type;
+    switch (cellType) {
+        case "Treasure" -> {
+            score += 10;
+            playSound("treasure.wav"); // 🎵 Treasure sesi çal
         }
 
-        // Eğer jump varsa (maksimum 3 kere zıplayabilir güvenlik için)
-        int jumpCount = 0;
-        while (currentNode.jump != null && jumpCount < 3) {
-            currentNode = currentNode.jump;
-            jumpCount++;
+        case "Trap" -> {
+            score -= 5;
+            playSound("trap.wav"); // 🎵 Trap sesi çal
         }
 
-        // Hücre tipine göre puan değişimi ve ses efekti
-        String cellType = currentNode.type;
-        switch (cellType) {
-            case "Treasure" -> {
-                score += 10;
-                playSound("treasure.wav"); // 🎵 Treasure sesi çal
+        case "Empty" -> {
+            // Boş hücrede hiçbir şey değişmez
+        }
+    }
+
+    lblScore.setText("Score: " + score);
+
+    // 🔥 Bütün butonları güncelle: (icon + yazı)
+    SpotNode temp = head;
+    for (int i = 0; i < buttons.length; i++) {
+        if (temp == null) {
+            break;
+        }
+
+        // Eğer eski hücrede oyuncu varsa, eski ikonunu geri getir
+        if (temp.index == previousIndex) {
+            // Önceki hücreye ait ikonları geri koyuyoruz (örneğin, "Empty" gibi)
+            switch (temp.type) {
+                case "Treasure" -> 
+                    buttons[i].setIcon(resizeIcon("/images/treasure.png", 60, 60));
+                case "Trap" -> 
+                    buttons[i].setIcon(resizeIcon("/images/trap.png", 60, 60));
+                case "Finish" -> 
+                    buttons[i].setIcon(resizeIcon("/images/finish.png", 60, 60));
+                case "Start" -> 
+                    buttons[i].setIcon(resizeIcon("/images/start.png", 60, 60));
+                default -> 
+                    buttons[i].setIcon(resizeIcon("/images/empty.png", 60, 60));
             }
-
-            case "Trap" -> {
-                score -= 5;
-                playSound("trap.wav"); // 🎵 Trap sesi çal
-            }
         }
 
-        lblScore.setText("Score: " + score);
-
-        // 🔥 Bütün butonları güncelle: (icon + yazı)
-        SpotNode temp = head;
-        for (int i = 0; i < buttons.length; i++) {
-            if (temp == null) {
-                break;
-            }
-
-            // İcon eklemek
-            if (i == currentNode.index) {
-                buttons[i].setIcon(playerIcon);
-                
-            }
-
-            temp = temp.next;
+        // İkonu şu anki hücreye koy
+        if (i == currentNode.index) {
+            buttons[i].setIcon(playerIcon);
         }
 
-        if (currentNode.type.equals("Finish")) {
-            JOptionPane.showMessageDialog(this, "Game Over! Final Score: " + score);
-            saveScoreToFile();
-            new MainMenu().setVisible(true);
-            this.dispose();
-        }
+        temp = temp.next;
+    }
 
+    // Bilgilendirme mesajı
+    String message = "You rolled a " + dice + "!\n";
+    message += "You moved from position " + previousIndex + " to position " + currentNode.index + ".\n";
+    message += "You landed on a " + cellType + "!\n";
+
+    if (cellType.equals("Treasure")) {
+        message += "You gained 10 points!\n";
+    } else if (cellType.equals("Trap")) {
+        message += "You lost 5 points!\n";
+    }
+
+    // Eğer jump yapılmışsa, bunu da belirtelim
+    if (jumpCount > 0) {
+        message += "You jumped " + jumpCount + " positions!\n";
+    }
+
+    // Bilgilendirme penceresini göster
+    JOptionPane.showMessageDialog(this, message, "Move Information", JOptionPane.INFORMATION_MESSAGE);
+
+    // Eğer varış noktası bitiş ise
+    if (currentNode.type.equals("Finish")) {
+        JOptionPane.showMessageDialog(this, "Game Over! Final Score: " + score);
+        saveScoreToFile();
+        new MainMenu().setVisible(true);
+        this.dispose();
+    }
+    
     }//GEN-LAST:event_btnRollDiceActionPerformed
 
     private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
