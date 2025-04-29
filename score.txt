@@ -10,3 +10,7 @@ TestUser, level2, 25
 TestUser, level2, 35
 rahime, level1, 25
 rahime, level2, 25
+elif, level1, 10
+elif, level2, -15
+elif, level1, 15
+elif, level2, 15

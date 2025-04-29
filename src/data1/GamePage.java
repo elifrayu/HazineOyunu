@@ -4,6 +4,7 @@
  */
 package data1;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -27,6 +28,9 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
@@ -41,7 +45,6 @@ public class GamePage extends javax.swing.JFrame {
      * Creates new form GamePage
      */
     private ImageIcon playerIcon;
-
 
     public void playDiceSound() {
         try {
@@ -79,9 +82,9 @@ public class GamePage extends javax.swing.JFrame {
     public GamePage(String username) {
         this.username = username;
         initComponents();
-        
-        getContentPane().setBackground(new Color(255, 243, 205)); 
-       
+
+        getContentPane().setBackground(new Color(255, 243, 205));
+
         // Profesyonel bilgi paneli
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
@@ -499,38 +502,17 @@ public class GamePage extends javax.swing.JFrame {
             }
             temp = temp.next;
         }
-        // Bilgilendirme paneli: Nereden nereye gidildiğini ve bonusları göster
-        String message = "You rolled a " + dice + "!\n";
-        message += "You moved from position " + previousNode.index + " to position " + currentNode.index + ".\n";
-        message += "You landed on a " + cellType + "!\n";
-
+        int scoreDelta = 0;
         if (cellType.equals("Treasure")) {
-            message += "You gained 10 points!\n";
+            scoreDelta = 10;
         } else if (cellType.equals("Trap")) {
-            message += "You lost 5 points!\n";
+            scoreDelta = -5;
         }
 
-        // Bilgilendirme penceresini göster
-        JOptionPane.showMessageDialog(this, message, "Move Information", JOptionPane.INFORMATION_MESSAGE);
-
-        // Eğer varış noktası bitiş ise
+        showCustomMoveDialog(this, dice, previousNode.index, currentNode.index, cellType, scoreDelta);
         if (currentNode.type.equals("Finish")) {
-            JOptionPane.showMessageDialog(this, "Level 1 completed! Your score: " + score);
             saveScoreToFile();
-
-            int choice = JOptionPane.showConfirmDialog(
-                    null, "Do you want to continue to Level 2?",
-                    "Continue?",
-                    JOptionPane.YES_NO_OPTION
-            );
-
-            if (choice == JOptionPane.YES_OPTION) {
-                this.dispose();
-                new GamePageLevel2(username).setVisible(true);
-            } else {
-                this.dispose();
-                new MainMenu().setVisible(true);
-            }
+            showLevelCompleteDialog(this, score, username);
         }
 
     }//GEN-LAST:event_btnRollDiceActionPerformed
@@ -548,6 +530,131 @@ public class GamePage extends javax.swing.JFrame {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error writing to file: " + e.getMessage());
         }
+    }
+
+    private void showLevelCompleteDialog(JFrame parent, int finalScore, String username) {
+        JDialog dialog = new JDialog(parent, "🎉 Level 1 Completed!", true);
+        dialog.setSize(450, 250);
+        dialog.setLocationRelativeTo(parent);
+        dialog.setLayout(new BorderLayout());
+
+        JPanel panel = new JPanel();
+        panel.setBackground(new Color(255, 243, 205));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+
+        Font fontTitle = new Font("Georgia", Font.BOLD, 22);
+        Font fontText = new Font("Segoe UI", Font.PLAIN, 16);
+        Color textColor = new Color(102, 51, 0);
+
+        JLabel lbl1 = new JLabel("🏁 Level 1 Completed!");
+        lbl1.setFont(fontTitle);
+        lbl1.setForeground(textColor);
+        lbl1.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel lbl2 = new JLabel("🎯 Final Score: " + finalScore);
+        lbl2.setFont(fontText);
+        lbl2.setForeground(textColor);
+        lbl2.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel lbl3 = new JLabel("Would you like to continue to Level 2?");
+        lbl3.setFont(fontText);
+        lbl3.setForeground(textColor);
+        lbl3.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        panel.add(lbl1);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(lbl2);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(lbl3);
+
+        // Butonlar
+        JButton btnYes = new JButton("✅ Yes, continue");
+        JButton btnNo = new JButton("❌ No, go to menu");
+
+        Font btnFont = new Font("Segoe UI", Font.BOLD, 14);
+
+        for (JButton btn : new JButton[]{btnYes, btnNo}) {
+            btn.setBackground(new Color(255, 223, 140));
+            btn.setForeground(textColor);
+            btn.setFont(btnFont);
+            btn.setFocusPainted(false);
+            btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            btn.setBorder(BorderFactory.createLineBorder(new Color(160, 82, 45)));
+        }
+
+        btnYes.addActionListener(e -> {
+            dialog.dispose();
+            parent.dispose(); // GamePageLevel1'i kapat
+            new GamePageLevel2(username).setVisible(true);
+        });
+
+        btnNo.addActionListener(e -> {
+            dialog.dispose();
+            parent.dispose();
+            new MainMenu().setVisible(true);
+        });
+
+        JPanel btnPanel = new JPanel();
+        btnPanel.setBackground(new Color(255, 243, 205));
+        btnPanel.add(btnYes);
+        btnPanel.add(Box.createHorizontalStrut(10));
+        btnPanel.add(btnNo);
+
+        dialog.add(panel, BorderLayout.CENTER);
+        dialog.add(btnPanel, BorderLayout.SOUTH);
+        dialog.setVisible(true);
+    }
+
+    public void showCustomMoveDialog(JFrame parent, int dice, int from, int to, String cellType, int scoreDelta) {
+        JDialog dialog = new JDialog(parent, "🎲 Move Result", true);
+        dialog.setSize(400, 240);
+        dialog.setLayout(new BorderLayout());
+        dialog.setLocationRelativeTo(parent);
+
+        JPanel panel = new JPanel();
+        panel.setBackground(new Color(255, 243, 205));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+
+        Font font = new Font("Segoe UI", Font.BOLD, 16);
+        Color textColor = new Color(102, 51, 0);
+
+        JLabel lbl1 = new JLabel("🎲 You rolled a " + dice + "!");
+        JLabel lbl2 = new JLabel("📌 From position " + from + " to " + to);
+        JLabel lbl3 = new JLabel("🗽 Landed on: " + cellType);
+        JLabel lbl4 = new JLabel();
+
+        if (scoreDelta > 0) {
+            lbl4.setText("🎉 +" + scoreDelta + " points!");
+        } else if (scoreDelta < 0) {
+            lbl4.setText("💀 " + scoreDelta + " points!");
+        } else {
+            lbl4.setText("🪥 No change in score.");
+        }
+
+        for (JLabel lbl : new JLabel[]{lbl1, lbl2, lbl3, lbl4}) {
+            lbl.setFont(font);
+            lbl.setForeground(textColor);
+            lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panel.add(lbl);
+            panel.add(Box.createVerticalStrut(8));
+        }
+
+        JButton ok = new JButton("OK ✅");
+        ok.setBackground(new Color(255, 223, 140));
+        ok.setForeground(textColor);
+        ok.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        ok.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ok.addActionListener(e -> dialog.dispose());
+
+        JPanel btnPanel = new JPanel();
+        btnPanel.setBackground(new Color(255, 243, 205));
+        btnPanel.add(ok);
+
+        dialog.add(panel, BorderLayout.CENTER);
+        dialog.add(btnPanel, BorderLayout.SOUTH);
+        dialog.setVisible(true);
     }
 
     /**
