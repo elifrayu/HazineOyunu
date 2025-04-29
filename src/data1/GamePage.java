@@ -79,6 +79,8 @@ public class GamePage extends javax.swing.JFrame {
     public GamePage(String username) {
         this.username = username;
         initComponents();
+        
+        getContentPane().setBackground(new Color(255, 243, 205)); 
        
         // Profesyonel bilgi paneli
         JPanel infoPanel = new JPanel();
@@ -270,6 +272,7 @@ public class GamePage extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        mapPanel.setBackground(new java.awt.Color(255, 243, 205));
         mapPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         jButton1.setText("jButton1");
