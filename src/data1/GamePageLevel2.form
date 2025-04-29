@@ -77,6 +77,11 @@
       </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="mapPanel">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="cd" green="f3" red="ff" type="rgb"/>
+        </Property>
+      </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
       </AuxValues>
@@ -93,6 +98,7 @@
             <Property name="text" type="java.lang.String" value="..."/>
             <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="contentAreaFilled" type="boolean" value="false"/>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton2">
@@ -209,14 +215,20 @@
             <Property name="contentAreaFilled" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton22">
+        <Component class="javax.swing.JButton" name="jButton21">
           <Properties>
             <Property name="text" type="java.lang.String" value="..."/>
             <Property name="contentAreaFilled" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton22ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton21ActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButton22">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="..."/>
+            <Property name="contentAreaFilled" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton23">
           <Properties>
@@ -229,6 +241,9 @@
             <Property name="text" type="java.lang.String" value="..."/>
             <Property name="contentAreaFilled" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton24ActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton25">
           <Properties>
@@ -237,12 +252,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton26">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="..."/>
-            <Property name="contentAreaFilled" type="boolean" value="false"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="jButton21">
           <Properties>
             <Property name="text" type="java.lang.String" value="..."/>
             <Property name="contentAreaFilled" type="boolean" value="false"/>

@@ -4,11 +4,15 @@
  */
 package data1;
 
+import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Image;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -19,7 +23,14 @@ import javax.sound.sampled.*;
 
 import java.io.File;
 import java.io.IOException;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.LayoutStyle;
+import javax.swing.UIManager;
 
 public class GamePageLevel2 extends javax.swing.JFrame {
 
@@ -76,13 +87,137 @@ public class GamePageLevel2 extends javax.swing.JFrame {
     public GamePageLevel2(String username) {
         this.username = username;
         initComponents();
+        
+
+
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setBackground(new Color(255, 243, 205));
+        infoPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(160, 82, 45), 2), " "));
+
+        lblUsername.setFont(new Font("Arial", Font.BOLD, 16));
+        lblScore.setFont(new Font("Arial", Font.BOLD, 16));
+        lblUsername.setForeground(new Color(102, 51, 0));
+        lblScore.setForeground(new Color(102, 51, 0));
+
+        infoPanel.add(lblUsername);
+        infoPanel.add(Box.createVerticalStrut(10));
+        infoPanel.add(lblScore);
+        getContentPane().setBackground(new Color(255, 243, 205));
+        mapPanel.setBackground(new Color(255, 243, 205));
+
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(50)
+                                .addComponent(btnRollDice, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+                                .addGap(40)
+                                .addComponent(lblDice, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                                .addComponent(infoPanel, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE)
+                                .addGap(40))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(50)
+                                .addComponent(mapPanel, GroupLayout.PREFERRED_SIZE, 700, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(50, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(15)
+                                .addComponent(btnRollDice)
+                                .addGap(50)
+                                .addComponent(lblDice)
+                                .addGap(80)
+                                .addComponent(infoPanel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
+        );
+
+        layout.setVerticalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(40)
+                                .addComponent(mapPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addGap(40)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(btnRollDice, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblDice, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(infoPanel, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(40, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnRollDice)
+                                .addComponent(lblDice)
+                                .addComponent(infoPanel, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
+        );
+
+        setSize(1000, 700);
+        setLocationRelativeTo(null);
 
         setupButtonLinkedListLevel2();
         btnRollDice.setIcon(resizeIcon("/images/dice.png", 40, 40));
         lblUsername.setText("User: " + username);
         lblScore.setText("Score: 0");
+        setupButtonLinkedListLevel2();
+        btnRollDice.setIcon(resizeIcon("/images/dice.png", 40, 40));
+        lblUsername.setText("User: " + username);
+        lblScore.setText("Score: 0");
+    }
+public void showCustomMoveDialog(JFrame parent, int dice, int from, int to, String cellType, int scoreDelta, int jumpCount) {
+    JDialog dialog = new JDialog(parent, "🎲 Move Result", true);
+    dialog.setSize(420, 250);
+    dialog.setLayout(new BorderLayout());
+    dialog.setLocationRelativeTo(parent);
+
+    JPanel panel = new JPanel();
+    panel.setBackground(new Color(255, 243, 205));
+    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+    panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+
+    Font font = new Font("Segoe UI", Font.BOLD, 16);
+    Color textColor = new Color(102, 51, 0);
+
+    // Label listesi oluştur
+    java.util.List<JLabel> labels = new java.util.ArrayList<>();
+
+    if (jumpCount > 0)
+        labels.add(new JLabel("⏩ You jumped " + jumpCount));
+
+    labels.add(new JLabel("🎲 You rolled a " + dice + "!"));
+    labels.add(new JLabel("📍 From position " + from + " to " + to));
+    labels.add(new JLabel("🧭 Landed on: " + cellType));
+
+    JLabel scoreLabel = new JLabel();
+    if (scoreDelta > 0)
+        scoreLabel.setText("🎉 +" + scoreDelta + " points!");
+    else if (scoreDelta < 0)
+        scoreLabel.setText("💀 " + scoreDelta + " points!");
+    else
+        scoreLabel.setText("🪵 No change in score.");
+    labels.add(scoreLabel);
+
+    // Ortak stil ve panel'e ekleme
+    for (JLabel lbl : labels) {
+        lbl.setFont(font);
+        lbl.setForeground(textColor);
+        lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(lbl);
+        panel.add(Box.createVerticalStrut(8));
     }
 
+    // OK Butonu
+    JButton ok = new JButton("OK ✅");
+    ok.setBackground(new Color(255, 223, 140));
+    ok.setForeground(textColor);
+    ok.setFont(new Font("Segoe UI", Font.BOLD, 14));
+    ok.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    ok.addActionListener(e -> dialog.dispose());
+
+    JPanel btnPanel = new JPanel();
+    btnPanel.setBackground(new Color(255, 243, 205));
+    btnPanel.add(ok);
+
+    dialog.add(panel, BorderLayout.CENTER);
+    dialog.add(btnPanel, BorderLayout.SOUTH);
+    dialog.setVisible(true);
+}
     private void setupButtonLinkedListLevel2() {
         buttons = new JButton[]{
             jButton1, jButton2, jButton3, jButton4, jButton5,
@@ -142,9 +277,10 @@ public class GamePageLevel2 extends javax.swing.JFrame {
                 default ->
                     buttons[i].setIcon(resizeIcon("/images/empty.png", 60, 60));
             }
-
+            buttons[i].setBackground(new Color(255, 243, 205));
             buttons[i].setOpaque(true);
-            
+            buttons[i].setContentAreaFilled(false);
+
         }
 
         // 2. Forward ve Backward düğümlerine jump bağlantısı kur
@@ -200,12 +336,12 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         jButton18 = new javax.swing.JButton();
         jButton19 = new javax.swing.JButton();
         jButton20 = new javax.swing.JButton();
+        jButton21 = new javax.swing.JButton();
         jButton22 = new javax.swing.JButton();
         jButton23 = new javax.swing.JButton();
         jButton24 = new javax.swing.JButton();
         jButton25 = new javax.swing.JButton();
         jButton26 = new javax.swing.JButton();
-        jButton21 = new javax.swing.JButton();
         jButton27 = new javax.swing.JButton();
         jButton28 = new javax.swing.JButton();
         jButton29 = new javax.swing.JButton();
@@ -227,11 +363,13 @@ public class GamePageLevel2 extends javax.swing.JFrame {
             }
         });
 
+        mapPanel.setBackground(new java.awt.Color(255, 243, 205));
         mapPanel.setLayout(new java.awt.GridLayout(5, 6, 10, 10));
 
         jButton1.setText("...");
         jButton1.setBorderPainted(false);
         jButton1.setContentAreaFilled(false);
+        jButton1.setFocusPainted(false);
         mapPanel.add(jButton1);
 
         jButton2.setText("...");
@@ -310,13 +448,17 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         jButton20.setContentAreaFilled(false);
         mapPanel.add(jButton20);
 
-        jButton22.setText("...");
-        jButton22.setContentAreaFilled(false);
-        jButton22.addActionListener(new java.awt.event.ActionListener() {
+        jButton21.setText("...");
+        jButton21.setContentAreaFilled(false);
+        jButton21.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton22ActionPerformed(evt);
+                jButton21ActionPerformed(evt);
             }
         });
+        mapPanel.add(jButton21);
+
+        jButton22.setText("...");
+        jButton22.setContentAreaFilled(false);
         mapPanel.add(jButton22);
 
         jButton23.setText("...");
@@ -325,6 +467,11 @@ public class GamePageLevel2 extends javax.swing.JFrame {
 
         jButton24.setText("...");
         jButton24.setContentAreaFilled(false);
+        jButton24.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton24ActionPerformed(evt);
+            }
+        });
         mapPanel.add(jButton24);
 
         jButton25.setText("...");
@@ -334,10 +481,6 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         jButton26.setText("...");
         jButton26.setContentAreaFilled(false);
         mapPanel.add(jButton26);
-
-        jButton21.setText("...");
-        jButton21.setContentAreaFilled(false);
-        mapPanel.add(jButton21);
 
         jButton27.setText("...");
         jButton27.setContentAreaFilled(false);
@@ -407,111 +550,149 @@ public class GamePageLevel2 extends javax.swing.JFrame {
     private void btnRollDiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRollDiceActionPerformed
         playDiceSound();
 
-    // Zarın değerini hesapla
-    int dice = (int) (Math.random() * 6) + 1;
-    btnRollDice.setIcon(resizeIcon("/images/dice.png", 40, 40));
-    lblDice.setText("Rolled: " + dice);
+        // Zarın değerini hesapla
+        int dice = (int) (Math.random() * 6) + 1;
+        btnRollDice.setIcon(resizeIcon("/images/dice.png", 40, 40));
+        lblDice.setText("Rolled: " + dice);
 
-    // Şu anki hücreyi kaydet
-    SpotNode previousNode = currentNode;
-    int previousIndex = currentNode.index;
+        // Şu anki hücreyi kaydet
+        SpotNode previousNode = currentNode;
+        int previousIndex = currentNode.index;
 
-    // Zar kadar ilerle
-    for (int i = 0; i < dice && currentNode.next != null; i++) {
-        currentNode = currentNode.next;
-    }
-
-    // Eğer jump varsa (maksimum 3 kere zıplayabilir güvenlik için)
-    int jumpCount = 0;
-    while (currentNode.jump != null && jumpCount < 3) {
-        currentNode = currentNode.jump;
-        jumpCount++;
-    }
-
-    // Hücre tipine göre puan değişimi ve ses efekti
-    String cellType = currentNode.type;
-    switch (cellType) {
-        case "Treasure" -> {
-            score += 10;
-            playSound("treasure.wav"); // 🎵 Treasure sesi çal
+        // Zar kadar ilerle
+        for (int i = 0; i < dice && currentNode.next != null; i++) {
+            currentNode = currentNode.next;
         }
 
-        case "Trap" -> {
-            score -= 5;
-            playSound("trap.wav"); // 🎵 Trap sesi çal
+        // Eğer jump varsa (maksimum 3 kere zıplayabilir güvenlik için)
+        int jumpCount = 0;
+        while (currentNode.jump != null && jumpCount < 3) {
+            currentNode = currentNode.jump;
+            jumpCount++;
         }
 
-        case "Empty" -> {
-            // Boş hücrede hiçbir şey değişmez
-        }
-    }
+        // Hücre tipine göre puan değişimi ve ses efekti
+        String cellType = currentNode.type;
+        switch (cellType) {
+            case "Treasure" -> {
+                score += 10;
+                playSound("treasure.wav"); // 🎵 Treasure sesi çal
+            }
 
-    lblScore.setText("Score: " + score);
+            case "Trap" -> {
+                score -= 5;
+                playSound("trap.wav"); // 🎵 Trap sesi çal
+            }
 
-    // 🔥 Bütün butonları güncelle: (icon + yazı)
-    SpotNode temp = head;
-    for (int i = 0; i < buttons.length; i++) {
-        if (temp == null) {
-            break;
-        }
-
-        // Eğer eski hücrede oyuncu varsa, eski ikonunu geri getir
-        if (temp.index == previousIndex) {
-            // Önceki hücreye ait ikonları geri koyuyoruz (örneğin, "Empty" gibi)
-            switch (temp.type) {
-                case "Treasure" -> 
-                    buttons[i].setIcon(resizeIcon("/images/treasure.png", 60, 60));
-                case "Trap" -> 
-                    buttons[i].setIcon(resizeIcon("/images/trap.png", 60, 60));
-                case "Finish" -> 
-                    buttons[i].setIcon(resizeIcon("/images/finish.png", 60, 60));
-                case "Start" -> 
-                    buttons[i].setIcon(resizeIcon("/images/start.png", 60, 60));
-                default -> 
-                    buttons[i].setIcon(resizeIcon("/images/empty.png", 60, 60));
+            case "Empty" -> {
+                // Boş hücrede hiçbir şey değişmez
             }
         }
 
-        // İkonu şu anki hücreye koy
-        if (i == currentNode.index) {
-            buttons[i].setIcon(playerIcon);
+        lblScore.setText("Score: " + score);
+
+        // 🔥 Bütün butonları güncelle: (icon + yazı)
+        SpotNode temp = head;
+        for (int i = 0; i < buttons.length; i++) {
+            if (temp == null) {
+                break;
+            }
+
+            // Eğer eski hücrede oyuncu varsa, eski ikonunu geri getir
+            if (temp.index == previousIndex) {
+                // Önceki hücreye ait ikonları geri koyuyoruz (örneğin, "Empty" gibi)
+                switch (temp.type) {
+                    case "Treasure" ->
+                        buttons[i].setIcon(resizeIcon("/images/treasure.png", 60, 60));
+                    case "Trap" ->
+                        buttons[i].setIcon(resizeIcon("/images/trap.png", 60, 60));
+                    case "Finish" ->
+                        buttons[i].setIcon(resizeIcon("/images/finish.png", 60, 60));
+                    case "Start" ->
+                        buttons[i].setIcon(resizeIcon("/images/start.png", 60, 60));
+                    default ->
+                        buttons[i].setIcon(resizeIcon("/images/empty.png", 60, 60));
+                }
+            }
+
+            // İkonu şu anki hücreye koy
+            if (i == currentNode.index) {
+                buttons[i].setIcon(playerIcon);
+            }
+
+            temp = temp.next;
         }
 
-        temp = temp.next;
-    }
+        // Bilgilendirme mesajı
+        int scoreDelta = 0;
+if (cellType.equals("Treasure")) scoreDelta = 10;
+else if (cellType.equals("Trap")) scoreDelta = -5;
 
-    // Bilgilendirme mesajı
-    String message = "You rolled a " + dice + "!\n";
-    message += "You moved from position " + previousIndex + " to position " + currentNode.index + ".\n";
-    message += "You landed on a " + cellType + "!\n";
+showCustomMoveDialog(this, dice, previousNode.index, currentNode.index, cellType, scoreDelta, jumpCount);
+        // Eğer varış noktası bitiş ise
+        if (currentNode.type.equals("Finish")) {
+            showGameOverDialog(this, score);
+            saveScoreToFile();
+            new MainMenu().setVisible(true);
+            this.dispose();
+        }
 
-    if (cellType.equals("Treasure")) {
-        message += "You gained 10 points!\n";
-    } else if (cellType.equals("Trap")) {
-        message += "You lost 5 points!\n";
-    }
-
-    // Eğer jump yapılmışsa, bunu da belirtelim
-    if (jumpCount > 0) {
-        message += "You jumped " + jumpCount + " positions!\n";
-    }
-
-    // Bilgilendirme penceresini göster
-    JOptionPane.showMessageDialog(this, message, "Move Information", JOptionPane.INFORMATION_MESSAGE);
-
-    // Eğer varış noktası bitiş ise
-    if (currentNode.type.equals("Finish")) {
-        JOptionPane.showMessageDialog(this, "Game Over! Final Score: " + score);
-        saveScoreToFile();
-        new MainMenu().setVisible(true);
-        this.dispose();
-    }
-    
     }//GEN-LAST:event_btnRollDiceActionPerformed
+private void showGameOverDialog(Component parent, int finalScore) {
+    JDialog dialog = new JDialog((JFrame) parent, "🎉 Adventure Completed", true);
+    dialog.setSize(380, 200);
+    dialog.setLocationRelativeTo(parent);
+    dialog.setLayout(new BorderLayout());
 
-    private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
+    // Ana panel
+    JPanel panel = new JPanel();
+    panel.setBackground(new Color(255, 243, 205));
+    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+    panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+
+    JLabel lblTitle = new JLabel("🏁 Game Over!");
+    lblTitle.setFont(new Font("Georgia", Font.BOLD, 22));
+    lblTitle.setForeground(new Color(102, 51, 0));
+    lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+    JLabel lblScore = new JLabel("Your final score: " + finalScore);
+    lblScore.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+    lblScore.setForeground(new Color(60, 40, 0));
+    lblScore.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+    panel.add(lblTitle);
+    panel.add(Box.createVerticalStrut(10));
+    panel.add(lblScore);
+
+    // Buton paneli
+    JButton btnOK = new JButton("Return to Menu 🔙");
+    btnOK.setBackground(new Color(255, 223, 140));
+    btnOK.setForeground(new Color(102, 51, 0));
+    btnOK.setFont(new Font("Segoe UI", Font.BOLD, 14));
+    btnOK.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    btnOK.setFocusPainted(false);
+    btnOK.setBorder(BorderFactory.createLineBorder(new Color(160, 82, 45)));
+
+    btnOK.addActionListener(e -> {
+        dialog.dispose();
+        new MainMenu().setVisible(true);
+    });
+
+    JPanel btnPanel = new JPanel();
+    btnPanel.setBackground(new Color(255, 243, 205));
+    btnPanel.add(btnOK);
+
+    dialog.add(panel, BorderLayout.CENTER);
+    dialog.add(btnPanel, BorderLayout.SOUTH);
+    dialog.setVisible(true);
+}
+    private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton22ActionPerformed
+    }//GEN-LAST:event_jButton21ActionPerformed
+
+    private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton24ActionPerformed
 
     private void saveScoreToFile() {
         try {

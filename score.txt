@@ -3,3 +3,10 @@ elifrayu, level1, -5
 eliff, level1, 20
 eliff, level2, -10
 rahime, level1, 0
+TestUser, level2, -15
+TestUser, level2, 10
+elif, level1, -20
+TestUser, level2, 25
+TestUser, level2, 35
+rahime, level1, 25
+rahime, level2, 25

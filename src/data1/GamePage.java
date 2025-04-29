@@ -86,7 +86,7 @@ public class GamePage extends javax.swing.JFrame {
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setBackground(new Color(255, 243, 205));
-        infoPanel.setBorder(BorderFactory.createTitledBorder("Player Info"));
+        //infoPanel.setBorder(BorderFactory.createTitledBorder("Player Info"));
 
         lblUsername.setFont(new Font("Arial", Font.BOLD, 16));
         lblScore.setFont(new Font("Arial", Font.BOLD, 16));
