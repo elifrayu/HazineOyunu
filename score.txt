@@ -14,3 +14,10 @@ elif, level1, 10
 elif, level2, -15
 elif, level1, 15
 elif, level2, 15
+elif, level1, 5
+elif, level2, 0
+e, level1, -5
+elif, level1, -15
+TestUser, level2, 10
+elif, level1, -15
+elif, level2, 0

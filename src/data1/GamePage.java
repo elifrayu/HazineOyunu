@@ -182,7 +182,7 @@ public class GamePage extends javax.swing.JFrame {
                 type = "Start"; // 1. butonun tipi Start olacak
             }
 
-            if (i == 29) {
+            if (i == buttons.length-1) {
                 type = "Finish"; // 30. butonun tipi Finish olacak
             }
 
@@ -508,8 +508,8 @@ public class GamePage extends javax.swing.JFrame {
         } else if (cellType.equals("Trap")) {
             scoreDelta = -5;
         }
-
-        showCustomMoveDialog(this, dice, previousNode.index, currentNode.index, cellType, scoreDelta);
+        showCustomMoveDialog(this, dice, previousNode.index + 1, currentNode.index + 1, cellType, scoreDelta);
+       // showCustomMoveDialog(this, dice, previousNode.index, currentNode.index, cellType, scoreDelta);
         if (currentNode.type.equals("Finish")) {
             saveScoreToFile();
             showLevelCompleteDialog(this, score, username);

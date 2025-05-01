@@ -242,7 +242,7 @@ public void showCustomMoveDialog(JFrame parent, int dice, int from, int to, Stri
                 type = "Start"; // 1. butonun tipi Start olacak
             }
 
-            if (i == 29) {
+            if (i == buttons.length-1) {
                 type = "Finish"; // 30. butonun tipi Finish olacak
             }
 
@@ -628,7 +628,7 @@ public void showCustomMoveDialog(JFrame parent, int dice, int from, int to, Stri
 if (cellType.equals("Treasure")) scoreDelta = 10;
 else if (cellType.equals("Trap")) scoreDelta = -5;
 
-showCustomMoveDialog(this, dice, previousNode.index, currentNode.index, cellType, scoreDelta, jumpCount);
+showCustomMoveDialog(this, dice, previousNode.index+1, currentNode.index+1, cellType, scoreDelta, jumpCount);
         // Eğer varış noktası bitiş ise
         if (currentNode.type.equals("Finish")) {
             showGameOverDialog(this, score);
