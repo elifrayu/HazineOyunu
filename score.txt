@@ -21,3 +21,4 @@ elif, level1, -15
 TestUser, level2, 10
 elif, level1, -15
 elif, level2, 0
+elif, level1, 10

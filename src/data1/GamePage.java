@@ -40,10 +40,7 @@ import javax.swing.SwingConstants;
  * @author elifuyar
  */
 public class GamePage extends javax.swing.JFrame {
-
-    /**
-     * Creates new form GamePage
-     */
+    
     private ImageIcon playerIcon;
 
     public void playDiceSound() {
@@ -181,7 +178,7 @@ public class GamePage extends javax.swing.JFrame {
             if (i == 0) {
                 type = "Start"; // 1. butonun tipi Start olacak
             }
-
+           //son elemanım buttons[29 olacağı için 
             if (i == buttons.length-1) {
                 type = "Finish"; // 30. butonun tipi Finish olacak
             }
@@ -201,7 +198,6 @@ public class GamePage extends javax.swing.JFrame {
             buttons[i].setText(""); // Yazıyı kaldır
 
             buttons[i].setPreferredSize(new Dimension(100, 60));
-
 // Type'a göre ikonu ayarla
             switch (type) {
                 case "Treasure" ->

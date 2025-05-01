@@ -87,8 +87,6 @@ public class GamePageLevel2 extends javax.swing.JFrame {
     public GamePageLevel2(String username) {
         this.username = username;
         initComponents();
-        
-
 
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
@@ -160,64 +158,68 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         lblUsername.setText("User: " + username);
         lblScore.setText("Score: 0");
     }
-public void showCustomMoveDialog(JFrame parent, int dice, int from, int to, String cellType, int scoreDelta, int jumpCount) {
-    JDialog dialog = new JDialog(parent, "🎲 Move Result", true);
-    dialog.setSize(420, 250);
-    dialog.setLayout(new BorderLayout());
-    dialog.setLocationRelativeTo(parent);
 
-    JPanel panel = new JPanel();
-    panel.setBackground(new Color(255, 243, 205));
-    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-    panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+    public void showCustomMoveDialog(JFrame parent, int dice, int from, int to, String cellType, int scoreDelta, int jumpCount) {
+        JDialog dialog = new JDialog(parent, "🎲 Move Result", true);
+        dialog.setSize(420, 250);
+        dialog.setLayout(new BorderLayout());
+        dialog.setLocationRelativeTo(parent);
 
-    Font font = new Font("Segoe UI", Font.BOLD, 16);
-    Color textColor = new Color(102, 51, 0);
+        JPanel panel = new JPanel();
+        panel.setBackground(new Color(255, 243, 205));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
 
-    // Label listesi oluştur
-    java.util.List<JLabel> labels = new java.util.ArrayList<>();
+        Font font = new Font("Segoe UI", Font.BOLD, 16);
+        Color textColor = new Color(102, 51, 0);
 
-    if (jumpCount > 0)
-        labels.add(new JLabel("⏩ You jumped " + jumpCount));
+        // Label listesi oluştur
+        java.util.List<JLabel> labels = new java.util.ArrayList<>();
 
-    labels.add(new JLabel("🎲 You rolled a " + dice + "!"));
-    labels.add(new JLabel("📍 From position " + from + " to " + to));
-    labels.add(new JLabel("🧭 Landed on: " + cellType));
+        if (jumpCount > 0) {
+            labels.add(new JLabel("⏩ You jumped " + jumpCount));
+        }
 
-    JLabel scoreLabel = new JLabel();
-    if (scoreDelta > 0)
-        scoreLabel.setText("🎉 +" + scoreDelta + " points!");
-    else if (scoreDelta < 0)
-        scoreLabel.setText("💀 " + scoreDelta + " points!");
-    else
-        scoreLabel.setText("🪵 No change in score.");
-    labels.add(scoreLabel);
+        labels.add(new JLabel("🎲 You rolled a " + dice + "!"));
+        labels.add(new JLabel("📍 From position " + from + " to " + to));
+        labels.add(new JLabel("🧭 Landed on: " + cellType));
 
-    // Ortak stil ve panel'e ekleme
-    for (JLabel lbl : labels) {
-        lbl.setFont(font);
-        lbl.setForeground(textColor);
-        lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(lbl);
-        panel.add(Box.createVerticalStrut(8));
+        JLabel scoreLabel = new JLabel();
+        if (scoreDelta > 0) {
+            scoreLabel.setText("🎉 +" + scoreDelta + " points!");
+        } else if (scoreDelta < 0) {
+            scoreLabel.setText("💀 " + scoreDelta + " points!");
+        } else {
+            scoreLabel.setText("🪵 No change in score.");
+        }
+        labels.add(scoreLabel);
+
+        // Ortak stil ve panel'e ekleme
+        for (JLabel lbl : labels) {
+            lbl.setFont(font);
+            lbl.setForeground(textColor);
+            lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panel.add(lbl);
+            panel.add(Box.createVerticalStrut(8));
+        }
+
+        // OK Butonu
+        JButton ok = new JButton("OK ✅");
+        ok.setBackground(new Color(255, 223, 140));
+        ok.setForeground(textColor);
+        ok.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        ok.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ok.addActionListener(e -> dialog.dispose());
+
+        JPanel btnPanel = new JPanel();
+        btnPanel.setBackground(new Color(255, 243, 205));
+        btnPanel.add(ok);
+
+        dialog.add(panel, BorderLayout.CENTER);
+        dialog.add(btnPanel, BorderLayout.SOUTH);
+        dialog.setVisible(true);
     }
 
-    // OK Butonu
-    JButton ok = new JButton("OK ✅");
-    ok.setBackground(new Color(255, 223, 140));
-    ok.setForeground(textColor);
-    ok.setFont(new Font("Segoe UI", Font.BOLD, 14));
-    ok.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    ok.addActionListener(e -> dialog.dispose());
-
-    JPanel btnPanel = new JPanel();
-    btnPanel.setBackground(new Color(255, 243, 205));
-    btnPanel.add(ok);
-
-    dialog.add(panel, BorderLayout.CENTER);
-    dialog.add(btnPanel, BorderLayout.SOUTH);
-    dialog.setVisible(true);
-}
     private void setupButtonLinkedListLevel2() {
         buttons = new JButton[]{
             jButton1, jButton2, jButton3, jButton4, jButton5,
@@ -241,8 +243,7 @@ public void showCustomMoveDialog(JFrame parent, int dice, int from, int to, Stri
             if (i == 0) {
                 type = "Start"; // 1. butonun tipi Start olacak
             }
-
-            if (i == buttons.length-1) {
+            if (i == buttons.length - 1) {
                 type = "Finish"; // 30. butonun tipi Finish olacak
             }
 
@@ -255,6 +256,7 @@ public void showCustomMoveDialog(JFrame parent, int dice, int from, int to, Stri
                 prev.next = node;
                 node.prev = prev;
             }
+            
             prev = node;
 
             // Burada tasarımdaki hazır butonları ayarlıyoruz
@@ -291,6 +293,7 @@ public void showCustomMoveDialog(JFrame parent, int dice, int from, int to, Stri
                 for (int j = 0; j < 3 && jumpTarget.next != null; j++) {
                     jumpTarget = jumpTarget.next;
                 }
+                // 3 hücre ileriye atlayacağı hücreyi 'jump' olarak ayarla
                 temp.jump = jumpTarget;
             } else if (temp.type.equals("Backward")) {
                 SpotNode jumpTarget = temp;
@@ -597,7 +600,7 @@ public void showCustomMoveDialog(JFrame parent, int dice, int from, int to, Stri
             if (temp == null) {
                 break;
             }
-
+            
             // Eğer eski hücrede oyuncu varsa, eski ikonunu geri getir
             if (temp.index == previousIndex) {
                 // Önceki hücreye ait ikonları geri koyuyoruz (örneğin, "Empty" gibi)
@@ -614,7 +617,7 @@ public void showCustomMoveDialog(JFrame parent, int dice, int from, int to, Stri
                         buttons[i].setIcon(resizeIcon("/images/empty.png", 60, 60));
                 }
             }
-
+            
             // İkonu şu anki hücreye koy
             if (i == currentNode.index) {
                 buttons[i].setIcon(playerIcon);
@@ -625,10 +628,13 @@ public void showCustomMoveDialog(JFrame parent, int dice, int from, int to, Stri
 
         // Bilgilendirme mesajı
         int scoreDelta = 0;
-if (cellType.equals("Treasure")) scoreDelta = 10;
-else if (cellType.equals("Trap")) scoreDelta = -5;
+        if (cellType.equals("Treasure")) {
+            scoreDelta = 10;
+        } else if (cellType.equals("Trap")) {
+            scoreDelta = -5;
+        }
 
-showCustomMoveDialog(this, dice, previousNode.index+1, currentNode.index+1, cellType, scoreDelta, jumpCount);
+        showCustomMoveDialog(this, dice, previousNode.index + 1, currentNode.index + 1, cellType, scoreDelta, jumpCount);
         // Eğer varış noktası bitiş ise
         if (currentNode.type.equals("Finish")) {
             showGameOverDialog(this, score);
@@ -638,54 +644,54 @@ showCustomMoveDialog(this, dice, previousNode.index+1, currentNode.index+1, cell
         }
 
     }//GEN-LAST:event_btnRollDiceActionPerformed
-private void showGameOverDialog(Component parent, int finalScore) {
-    JDialog dialog = new JDialog((JFrame) parent, "🎉 Adventure Completed", true);
-    dialog.setSize(380, 200);
-    dialog.setLocationRelativeTo(parent);
-    dialog.setLayout(new BorderLayout());
+    private void showGameOverDialog(Component parent, int finalScore) {
+        JDialog dialog = new JDialog((JFrame) parent, "🎉 Adventure Completed", true);
+        dialog.setSize(380, 200);
+        dialog.setLocationRelativeTo(parent);
+        dialog.setLayout(new BorderLayout());
 
-    // Ana panel
-    JPanel panel = new JPanel();
-    panel.setBackground(new Color(255, 243, 205));
-    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-    panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+        // Ana panel
+        JPanel panel = new JPanel();
+        panel.setBackground(new Color(255, 243, 205));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
 
-    JLabel lblTitle = new JLabel("🏁 Game Over!");
-    lblTitle.setFont(new Font("Georgia", Font.BOLD, 22));
-    lblTitle.setForeground(new Color(102, 51, 0));
-    lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel lblTitle = new JLabel("🏁 Game Over!");
+        lblTitle.setFont(new Font("Georgia", Font.BOLD, 22));
+        lblTitle.setForeground(new Color(102, 51, 0));
+        lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-    JLabel lblScore = new JLabel("Your final score: " + finalScore);
-    lblScore.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-    lblScore.setForeground(new Color(60, 40, 0));
-    lblScore.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel lblScore = new JLabel("Your final score: " + finalScore);
+        lblScore.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        lblScore.setForeground(new Color(60, 40, 0));
+        lblScore.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-    panel.add(lblTitle);
-    panel.add(Box.createVerticalStrut(10));
-    panel.add(lblScore);
+        panel.add(lblTitle);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(lblScore);
 
-    // Buton paneli
-    JButton btnOK = new JButton("Return to Menu 🔙");
-    btnOK.setBackground(new Color(255, 223, 140));
-    btnOK.setForeground(new Color(102, 51, 0));
-    btnOK.setFont(new Font("Segoe UI", Font.BOLD, 14));
-    btnOK.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    btnOK.setFocusPainted(false);
-    btnOK.setBorder(BorderFactory.createLineBorder(new Color(160, 82, 45)));
+        // Buton paneli
+        JButton btnOK = new JButton("Return to Menu 🔙");
+        btnOK.setBackground(new Color(255, 223, 140));
+        btnOK.setForeground(new Color(102, 51, 0));
+        btnOK.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnOK.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnOK.setFocusPainted(false);
+        btnOK.setBorder(BorderFactory.createLineBorder(new Color(160, 82, 45)));
 
-    btnOK.addActionListener(e -> {
-        dialog.dispose();
-        new MainMenu().setVisible(true);
-    });
+        btnOK.addActionListener(e -> {
+            dialog.dispose();
+            new MainMenu().setVisible(true);
+        });
 
-    JPanel btnPanel = new JPanel();
-    btnPanel.setBackground(new Color(255, 243, 205));
-    btnPanel.add(btnOK);
+        JPanel btnPanel = new JPanel();
+        btnPanel.setBackground(new Color(255, 243, 205));
+        btnPanel.add(btnOK);
 
-    dialog.add(panel, BorderLayout.CENTER);
-    dialog.add(btnPanel, BorderLayout.SOUTH);
-    dialog.setVisible(true);
-}
+        dialog.add(panel, BorderLayout.CENTER);
+        dialog.add(btnPanel, BorderLayout.SOUTH);
+        dialog.setVisible(true);
+    }
     private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton21ActionPerformed

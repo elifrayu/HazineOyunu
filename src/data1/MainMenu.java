@@ -36,8 +36,6 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void showHowToPlay() {
         ImageIcon originalIcon = new ImageIcon(getClass().getResource("/images/how_to_play.png"));
-
-        // Resmi küçültelim (örnek: 500x400 boyutlarına)
         Image scaledImage = originalIcon.getImage().getScaledInstance(600, 800, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
