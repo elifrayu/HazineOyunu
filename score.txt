@@ -22,3 +22,10 @@ TestUser, level2, 10
 elif, level1, -15
 elif, level2, 0
 elif, level1, 10
+rahime, level1, 30
+rahime, level2, 100
+rahime, level1, 10
+rahime, level1, 30
+TestUser, level2, 80
+zeynep, level1, -5
+zeynep, level2, -10

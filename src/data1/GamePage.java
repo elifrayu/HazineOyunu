@@ -40,7 +40,7 @@ import javax.swing.SwingConstants;
  * @author elifuyar
  */
 public class GamePage extends javax.swing.JFrame {
-    
+
     private ImageIcon playerIcon;
 
     public void playDiceSound() {
@@ -82,11 +82,9 @@ public class GamePage extends javax.swing.JFrame {
 
         getContentPane().setBackground(new Color(255, 243, 205));
 
-        // Profesyonel bilgi paneli
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setBackground(new Color(255, 243, 205));
-        //infoPanel.setBorder(BorderFactory.createTitledBorder("Player Info"));
 
         lblUsername.setFont(new Font("Arial", Font.BOLD, 16));
         lblScore.setFont(new Font("Arial", Font.BOLD, 16));
@@ -178,8 +176,8 @@ public class GamePage extends javax.swing.JFrame {
             if (i == 0) {
                 type = "Start"; // 1. butonun tipi Start olacak
             }
-           //son elemanım buttons[29 olacağı için 
-            if (i == buttons.length-1) {
+            //son elemanım buttons[29] olacağı için 
+            if (i == buttons.length - 1) {
                 type = "Finish"; // 30. butonun tipi Finish olacak
             }
 
@@ -187,7 +185,7 @@ public class GamePage extends javax.swing.JFrame {
 
             if (head == null) {
                 head = node;
-                currentNode = head; // oyuncu başlangıçta head’te
+                currentNode = head;
             } else {
                 //önceki düğümle şimdikini bağlar
                 prev.next = node;
@@ -195,10 +193,10 @@ public class GamePage extends javax.swing.JFrame {
             //şimdiki düğüm bir sonrakinde prev olur
             prev = node;
 
-            buttons[i].setText(""); // Yazıyı kaldır
+            buttons[i].setText("");
 
             buttons[i].setPreferredSize(new Dimension(100, 60));
-// Type'a göre ikonu ayarla
+
             switch (type) {
                 case "Treasure" ->
                     buttons[i].setIcon(resizeIcon("/images/treasure.png", 60, 60));
@@ -212,7 +210,7 @@ public class GamePage extends javax.swing.JFrame {
                     buttons[i].setIcon(resizeIcon("/images/empty.png", 60, 60));
             }
 
-            buttons[i].setOpaque(false); // Arkaplanı saydam yap
+            buttons[i].setOpaque(false);
             buttons[i].setContentAreaFilled(false);
             buttons[i].setBorderPainted(false);
             buttons[i].setFocusPainted(false);
@@ -505,7 +503,7 @@ public class GamePage extends javax.swing.JFrame {
             scoreDelta = -5;
         }
         showCustomMoveDialog(this, dice, previousNode.index + 1, currentNode.index + 1, cellType, scoreDelta);
-       // showCustomMoveDialog(this, dice, previousNode.index, currentNode.index, cellType, scoreDelta);
+        // showCustomMoveDialog(this, dice, previousNode.index, currentNode.index, cellType, scoreDelta);
         if (currentNode.type.equals("Finish")) {
             saveScoreToFile();
             showLevelCompleteDialog(this, score, username);

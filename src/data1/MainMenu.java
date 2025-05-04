@@ -304,7 +304,7 @@ public class MainMenu extends javax.swing.JFrame {
                         int score = Integer.parseInt(parts[2].trim());
 
                         if (user.equalsIgnoreCase(username)) {
-                            bst.insert(score, level);
+                            bst.insert(score, user, level); 
                         }
                     }
                 }

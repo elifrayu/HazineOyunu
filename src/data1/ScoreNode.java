@@ -11,12 +11,14 @@ package data1;
 // BST düğüm sınıfı
 class ScoreNode {
 
-    int score;        // Oyuncunun skoru
-    String level;// Bu skorun ait olduğu seviye bilgisi (Level 1 veya Level 2 gibi)
+    int score;        
+    String username;
+    String level;
     ScoreNode left, right;// Sol ve sağ çocuk düğümleri (BST yapısı için)
 
-// Yapıcı (constructor): Yeni bir ScoreNode nesnesi oluşturur
-    public ScoreNode(int score, String level) {
+
+    public ScoreNode(int score, String username, String level) {
+        this.username = username;
         this.score = score;
         this.level = level;
         left = right = null;// Başlangıçta çocuğu yok
@@ -26,24 +28,23 @@ class ScoreNode {
 // BST ağacı sınıfı
 class ScoreBST {
 
-    ScoreNode root;// Ağacın kök düğümü
+    ScoreNode root;
 
     // Yeni bir skor eklemek için dışarıdan çağrılan fonksiyon
-    public void insert(int score, String level) {
-        root = insertRec(root, score, level);
+    public void insert(int score, String username, String level) {
+        root = insertRec(root, score, username, level);
     }
 // Skoru ağaca rekürsif olarak yerleştiren yardımcı fonksiyon
-    private ScoreNode insertRec(ScoreNode root, int score, String level) {
+    private ScoreNode insertRec(ScoreNode root, int score, String username, String level) {
          // Eğer kök düğüm null ise, buraya yeni düğüm eklenebilir
         if (root == null) {
-            root = new ScoreNode(score, level);
-            return root;
-        }
+        return new ScoreNode(score, username, level);
+    }
         // Skor küçükse sola eklenir,Skor büyük veya eşitse sağa eklenir
         if (score < root.score) {
-            root.left = insertRec(root.left, score, level);
+            root.left = insertRec(root.left, score, username, level);
         } else {
-            root.right = insertRec(root.right, score, level);
+            root.right = insertRec(root.right, score, username, level);
         }
         return root;
     }
