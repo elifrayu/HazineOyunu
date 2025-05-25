@@ -23,6 +23,7 @@ class ScoreNode {
         this.level = level;
         left = right = null;// Başlangıçta çocuğu yok
     }
+    
 }
 
 // BST ağacı sınıfı

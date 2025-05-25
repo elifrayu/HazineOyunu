@@ -239,14 +239,12 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         // 1. Normal ileri-geri bağlantılı listeyi kur
         for (int i = 0; i < 30; i++) {
             String type = types[(int) (Math.random() * types.length)];
-
             if (i == 0) {
                 type = "Start"; // 1. butonun tipi Start olacak
             }
             if (i == buttons.length - 1) {
                 type = "Finish"; // 30. butonun tipi Finish olacak
             }
-
             SpotNode node = new SpotNode(type, i);
 
             if (head == null) {
@@ -562,6 +560,7 @@ public class GamePageLevel2 extends javax.swing.JFrame {
 
         // Eğer jump varsa (maksimum 3 kere zıplayabilir güvenlik için)
         int jumpCount = 0;
+        
         while (currentNode.jump != null && jumpCount < 3) {
             currentNode = currentNode.jump;
             jumpCount++;
@@ -615,7 +614,6 @@ public class GamePageLevel2 extends javax.swing.JFrame {
             if (i == currentNode.index) {
                 buttons[i].setIcon(playerIcon);
             }
-
             temp = temp.next;
         }
 
@@ -626,7 +624,7 @@ public class GamePageLevel2 extends javax.swing.JFrame {
         } else if (cellType.equals("Trap")) {
             scoreDelta = -5;
         }
-
+        
         showCustomMoveDialog(this, dice, previousNode.index + 1, currentNode.index + 1, cellType, scoreDelta, jumpCount);
         // Eğer varış noktası bitiş ise
         if (currentNode.type.equals("Finish")) {

@@ -29,3 +29,6 @@ rahime, level1, 30
 TestUser, level2, 80
 zeynep, level1, -5
 zeynep, level2, -10
+eliff, level1, 30
+rahime, level1, -5
+rahime, level2, -5

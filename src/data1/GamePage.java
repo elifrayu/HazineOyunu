@@ -508,7 +508,7 @@ public class GamePage extends javax.swing.JFrame {
             saveScoreToFile();
             showLevelCompleteDialog(this, score, username);
         }
-
+        
     }//GEN-LAST:event_btnRollDiceActionPerformed
 
     private void saveScoreToFile() {
